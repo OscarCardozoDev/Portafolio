@@ -3,22 +3,22 @@ import "./Home.css";
 
 const Home: React.FC = () => {
   const portfolioItems = [
+
     {
       id: 1,
-      title: "OSCAR CARDOZO",
-      description: "Creamos valor desarrollando y regularmente renovando estrategias en la venta de vehículos de dos ruedas.",
-      category: "Creativo",
-      image: "src/assets/home/Oscar.jpg",
-
-      color: "blue"
-    },
-    {
-      id: 2,
       title: "MUSICAL",
       description: "Compartimos tu pasión, creatividad y performance musical de alto nivel.",
       category: "Entertainment",
       image: "/api/placeholder/300/200",
       color: "purple"
+    },
+    {
+      id: 2,
+      title: "OSCAR CARDOZO",
+      description: "Un apasionado por la tecnología y la creatividad. Me enfoco en el frontend, especializado en React y Nest.js.",
+      category: "Creativo",
+      image: "src/assets/home/Oscar.jpg",
+      color: "blue"
     },
     {
       id: 3,
