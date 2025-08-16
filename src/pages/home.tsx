@@ -3,7 +3,6 @@ import "./Home.css";
 
 const Home: React.FC = () => {
   const portfolioItems = [
-
     {
       id: 1,
       title: "MUSICAL",
