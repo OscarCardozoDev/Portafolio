@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import './pablo.css';
-
+import logoFlex from './../assets/home/logoFlex.png'
+import AnimFlix from './../assets/home/Animflix.png'
+import imagenDatos from './../assets/home/python-powerbi-data-science-1024x404.jpg'
 
 interface Project {
   id: number;
@@ -46,58 +48,41 @@ const Portfolio: React.FC = () => {
   const projects: Project[] = [
     {
       id: 1,
-      title: 'E-commerce Platform',
-      description: 'Una plataforma de e-commerce completa con React, Node.js y MongoDB. Incluye carrito de compras, autenticación y panel de administración.',
-      technologies: ['React', 'Node.js', 'MongoDB', 'Express', 'JWT'],
-      image: '/api/placeholder/400/250',
+      title: 'Flex Drive',
+      description: 'Colaboracion en la creacion de una plataforma de arrendamiento vehicular. a lo largo del proyecto colabore con la documentacion y creacion de modelos RAG para las preferencias de usuarios.',
+      technologies: ['python', 'Selenium', 'Sickit-learn', 'Pandas', 'Tensorflow'],
+      image: logoFlex,
       demoUrl: 'https://demo.example.com',
-      githubUrl: 'https://github.com/usuario/proyecto',
-      category: 'fullstack'
+      githubUrl: 'https://github.com/JorgeDanielRamirezNieves/Flex-Drive',
+      category: 'Automatizacion/IA'
     },
     {
       id: 2,
-      title: 'Task Management App',
-      description: 'Aplicación de gestión de tareas con drag & drop, notificaciones en tiempo real y colaboración en equipo.',
-      technologies: ['React', 'TypeScript', 'Socket.io', 'PostgreSQL'],
-      image: '/api/placeholder/400/250',
+      title: 'AnimFlix',
+      description: 'colaboracion de la creacion de una API en la plataforma Animflix',
+      technologies: ['React', 'Express'],
+      image: AnimFlix,
       demoUrl: 'https://tasks.example.com',
       githubUrl: 'https://github.com/usuario/tasks',
       category: 'frontend'
     },
     {
       id: 3,
-      title: 'API REST Microservices',
-      description: 'Arquitectura de microservicios con Nest.js, implementando autenticación, autorización y documentación con Swagger.',
-      technologies: ['Nest.js', 'TypeScript', 'Docker', 'PostgreSQL', 'Redis'],
-      image: '/api/placeholder/400/250',
+      title: 'Tratamiento de datos de empresas',
+      description: 'se pidio una colaboracion con el tratamiento de datos de cobro de empresas de las regiones de Boyaca, Cundinamarca, Santander y Norte de Santander',
+      technologies: ['Excel', 'Pandas','Numpy','Power Bi'],
+      image: imagenDatos,
       githubUrl: 'https://github.com/usuario/api',
       category: 'backend'
     },
     {
       id: 4,
-      title: 'Dashboard Analytics',
-      description: 'Dashboard interactivo para análisis de datos con gráficos dinámicos y filtros avanzados.',
-      technologies: ['React', 'D3.js', 'Chart.js', 'TailwindCSS'],
+      title: 'Multiples Ponencias',
+      description: 'se realizo una serie de ponencias sobre temas de tecnologia y desarrollo de software en diversas universidades.',
+      technologies: ['React', 'Node.js', 'JWT'],
       image: '/api/placeholder/400/250',
       demoUrl: 'https://analytics.example.com',
       category: 'frontend'
-    },
-    {
-      id: 5,
-      title: 'Mobile App React Native',
-      description: 'Aplicación móvil multiplataforma para delivery de comida con geolocalización y pagos integrados.',
-      technologies: ['React Native', 'Expo', 'Firebase', 'Stripe'],
-      image: '/api/placeholder/400/250',
-      category: 'mobile'
-    },
-    {
-      id: 6,
-      title: 'DevOps CI/CD Pipeline',
-      description: 'Pipeline de integración y despliegue continuo con Docker, GitHub Actions y AWS.',
-      technologies: ['Docker', 'GitHub Actions', 'AWS', 'Kubernetes'],
-      image: '/api/placeholder/400/250',
-      githubUrl: 'https://github.com/usuario/devops',
-      category: 'devops'
     }
   ];
 
@@ -278,11 +263,11 @@ const Portfolio: React.FC = () => {
                   <img src={project.image} alt={project.title} />
                   <div className="project-overlay">
                     <div className="project-links">
-                      {project.demoUrl && (
+                     {/*  {project.demoUrl && (
                         <a href={project.demoUrl} target="_blank" rel="noopener noreferrer" className="project-link">
                           Demo
                         </a>
-                      )}
+                      )} */}
                       {project.githubUrl && (
                         <a href={project.githubUrl} target="_blank" rel="noopener noreferrer" className="project-link">
                           GitHub
@@ -315,7 +300,7 @@ const Portfolio: React.FC = () => {
               <h3>¡Hablemos!</h3>
               <p>
                 Estoy siempre abierto a discutir nuevas oportunidades, 
-                proyectos interesantes o simplemente conversar sobre tecnología.
+                proyectos interesantes, nuevos lenguajes o estrategias de aprendizaje.
               </p>
               <div className="contact-methods">
                 <div className="contact-method">
