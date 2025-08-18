@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import "./home.css";
 import OscarImage from "../assets/home/Oscar.jpg";
+import mifoto from "./../assets/home/mifoto.png"
 
 const Home: React.FC = () => {
   const portfolioItems = [
@@ -10,7 +11,7 @@ const Home: React.FC = () => {
       title: "PABLO AGUILAR",
       description: "Especialzado en machine learning, el tratamiento de datos y el entrenamiento de inteligencias artificiales especializadas",
       category: "Machine Learning",
-      image: "/api/placeholder/300/200",
+      image: mifoto,
       color: "purple"
     },
     {
@@ -53,7 +54,7 @@ const Home: React.FC = () => {
               <img
                 src={item.image}
                 alt={item.title}
-                className="card-image"
+                className={`card-image ${item.id === 1 ? 'circular' : ''}`}
               />
             </div>
 
@@ -82,7 +83,7 @@ const Home: React.FC = () => {
 
               {/* Action button */}
               <div className="button-container">
-                {item.id === 2 ? (
+                {item.id === 1 ? (
                   <Link to="/portfolio" className="enter-button">
                     ENTRAR
                   </Link>
