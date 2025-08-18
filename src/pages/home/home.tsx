@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import "./Home.css";
 
 const Home: React.FC = () => {
@@ -16,6 +17,7 @@ const Home: React.FC = () => {
       title: "OSCAR CARDOZO",
       description: "Un apasionado por la tecnología y la creatividad. Me enfoco en el frontend, especializado en React y Nest.js.",
       category: "Creativo",
+      route: "oscar",
       image: "src/assets/home/Oscar.jpg",
       color: "blue"
     },
@@ -81,7 +83,9 @@ const Home: React.FC = () => {
               {/* Action button */}
               <div className="button-container">
                 <button className="enter-button">
-                  ENTRAR
+                  <Link to={`/${item.route}`}>
+                    ENTRAR
+                  </Link>
                 </button>
               </div>
             </div>
