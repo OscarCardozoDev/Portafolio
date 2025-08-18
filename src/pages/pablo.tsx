@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import './pablo.css';
 
+
 interface Project {
   id: number;
   title: string;
@@ -181,7 +182,7 @@ const Portfolio: React.FC = () => {
           </div>
           <div className="hero-image">
             <div className="image-placeholder">
-              <span>👨‍💻</span>
+              
             </div>
           </div>
         </div>
@@ -331,9 +332,7 @@ const Portfolio: React.FC = () => {
                 </div>
               </div>
               <div className="social-links">
-                <a href="https://github.com/OscarCardozoDev" target="_blank" rel="noopener noreferrer">GitHub</a>
-                <a href="https://linkedin.com/in/oscar-cardozo" target="_blank" rel="noopener noreferrer">LinkedIn</a>
-                <a href="https://twitter.com/oscar_cardozo" target="_blank" rel="noopener noreferrer">Twitter</a>
+                <a href="https://github.com/pabno5" target="_blank" rel="noopener noreferrer">GitHub</a>
               </div>
             </div>
             <form className="contact-form">
