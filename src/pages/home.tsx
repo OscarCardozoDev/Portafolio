@@ -1,14 +1,17 @@
 import React from "react";
-import "./Home.css";
+import { Link } from "react-router-dom";
+import "./home.css";
+import OscarImage from "../assets/home/Oscar.jpg";
+import mifoto from "./../assets/home/mifoto.png"
 
 const Home: React.FC = () => {
   const portfolioItems = [
     {
       id: 1,
-      title: "MUSICAL",
-      description: "Compartimos tu pasión, creatividad y performance musical de alto nivel.",
-      category: "Entertainment",
-      image: "/api/placeholder/300/200",
+      title: "PABLO AGUILAR",
+      description: "Especialzado en machine learning, el tratamiento de datos y el entrenamiento de inteligencias artificiales especializadas",
+      category: "Machine Learning",
+      image: mifoto,
       color: "purple"
     },
     {
@@ -16,7 +19,7 @@ const Home: React.FC = () => {
       title: "OSCAR CARDOZO",
       description: "Un apasionado por la tecnología y la creatividad. Me enfoco en el frontend, especializado en React y Nest.js.",
       category: "Creativo",
-      image: "src/assets/home/Oscar.jpg",
+      image: OscarImage,
       color: "blue"
     },
     {
@@ -51,7 +54,7 @@ const Home: React.FC = () => {
               <img
                 src={item.image}
                 alt={item.title}
-                className="card-image"
+                className={`card-image ${item.id === 1 ? 'circular' : ''}`}
               />
             </div>
 
@@ -80,9 +83,17 @@ const Home: React.FC = () => {
 
               {/* Action button */}
               <div className="button-container">
-                <button className="enter-button">
-                  ENTRAR
-                </button>
+                {item.id === 1 ? (
+                  <Link to="/portfolio" className="enter-button">
+                    ENTRAR
+                  </Link>
+                  
+                 
+                ) : (
+                  <button className="enter-button">
+                    ENTRAR
+                  </button>
+                )}
               </div>
             </div>
 
