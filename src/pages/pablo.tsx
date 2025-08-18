@@ -320,11 +320,11 @@ const Portfolio: React.FC = () => {
               <div className="contact-methods">
                 <div className="contact-method">
                   <span className="contact-icon">📧</span>
-                  <span>oscar.cardozo@email.com</span>
+                  <span>aguilarchinomepablonicolas@email.com</span>
                 </div>
                 <div className="contact-method">
                   <span className="contact-icon">📱</span>
-                  <span>+57 123 456 7890</span>
+                  <span>+57 310 858 4466</span>
                 </div>
                 <div className="contact-method">
                   <span className="contact-icon">📍</span>
