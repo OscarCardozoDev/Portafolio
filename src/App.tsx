@@ -1,15 +1,16 @@
-
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import Home from './pages/home/home'
+import OscarPage from './pages/oscar/OscarPortafolio'
+import PabloPage from './pages/pablo'
 import './App.css'
-import Home from './pages/home'
-import Portfolio from './pages/pablo'
 
 function App() {
   return (
     <Router>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/portfolio" element={<Portfolio />} />
+        <Route path="/oscar" element={<OscarPage />} />
+        <Route path="/pablo" element={<PabloPage />} />
       </Routes>
     </Router>
   )
