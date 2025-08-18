@@ -1,13 +1,15 @@
 import React from "react";
-import "./Home.css";
+import { Link } from "react-router-dom";
+import "./home.css";
+import OscarImage from "../assets/home/Oscar.jpg";
 
 const Home: React.FC = () => {
   const portfolioItems = [
     {
       id: 1,
-      title: "MUSICAL",
-      description: "Compartimos tu pasión, creatividad y performance musical de alto nivel.",
-      category: "Entertainment",
+      title: "PABLO AGUILAR",
+      description: "Especialzado en machine learning, el tratamiento de datos y el entrenamiento de inteligencias artificiales especializadas",
+      category: "Machine Learning",
       image: "/api/placeholder/300/200",
       color: "purple"
     },
@@ -16,7 +18,7 @@ const Home: React.FC = () => {
       title: "OSCAR CARDOZO",
       description: "Un apasionado por la tecnología y la creatividad. Me enfoco en el frontend, especializado en React y Nest.js.",
       category: "Creativo",
-      image: "src/assets/home/Oscar.jpg",
+      image: OscarImage,
       color: "blue"
     },
     {
@@ -80,9 +82,17 @@ const Home: React.FC = () => {
 
               {/* Action button */}
               <div className="button-container">
-                <button className="enter-button">
-                  ENTRAR
-                </button>
+                {item.id === 2 ? (
+                  <Link to="/portfolio" className="enter-button">
+                    ENTRAR
+                  </Link>
+                  
+                 
+                ) : (
+                  <button className="enter-button">
+                    ENTRAR
+                  </button>
+                )}
               </div>
             </div>
 
