@@ -5,6 +5,18 @@ import ManuelImage from "../../assets/home/Perfil-Silva.jpg"
 
 const Portfolio = () => {
 
+    const skills = [
+    { name: 'JavaScript', level: 70 },
+    { name: 'Java', level: 90 },
+    { name: 'C#', level: 80 },
+    { name: 'Python', level: 65 },
+    { name: 'CSS', level: 65 },
+    { name: 'SQL Server', level: 85 },
+    { name: 'Blender', level: 75 },
+    { name: 'Unity', level: 70 },
+    { name: 'Redes', level: 65 }
+  ];
+    
     return (
         <div className="portfolio">
       {/* Header/Hero Section */}
@@ -55,6 +67,30 @@ const Portfolio = () => {
           </div>
         </div>
       </section>
+
+        {/* Skills Section */}
+      <section id="skills" className="section skills-section">
+        <div className="container">
+          <h2 className="section-title">Habilidades</h2>
+          <div className="skills-grid">
+            {skills.map((skill, index) => (
+              <div key={index} className="skill-item">
+                <div className="skill-header">
+                  <span className="skill-name">{skill.name}</span>
+                  <span className="skill-percentage">{skill.level}%</span>
+                </div>
+                <div className="skill-bar">
+                  <div 
+                    className="skill-progress" 
+                    style={{ width: `${skill.level}%` }}
+                  ></div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       /</div>
     );
 };
