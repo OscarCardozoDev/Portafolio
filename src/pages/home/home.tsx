@@ -1,8 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import "./home.css";
-import OscarImage from "../assets/home/Oscar.jpg";
-import mifoto from "./../assets/home/mifoto.png"
+import OscarImage from "../../assets/home/Oscar.jpg";
+import mifoto from "../../assets/home/mifoto.png"
+import ManuelImage from "../../assets/home/Perfil-Silva.jpg"
 
 const Home: React.FC = () => {
   const portfolioItems = [
@@ -26,10 +27,10 @@ const Home: React.FC = () => {
     },
     {
       id: 3,
-      title: "YAMAHA SERVICIOS FINANCIEROS",
-      description: "Cuenta en quien confiar para hacer realidad tus planes de tener una Yamaha ahora en Colombia.",
-      category: "Financial Services",
-      image: "/api/placeholder/300/200",
+      title: "Manuel Silva",
+      description: "Desarrollador en formación con experiencia en aplicaciones móviles y servicios web, especializado en Xamarin Forms, ASP.NET Core, SQL Server en Azure y gestión en redes.",
+      category: "Proactivo",
+      image: ManuelImage,
       color: "red"
     },
     {
