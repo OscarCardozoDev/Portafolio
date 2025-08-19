@@ -31,7 +31,8 @@ const Home: React.FC = () => {
       description: "Desarrollador en formación con experiencia en aplicaciones móviles y servicios web, especializado en Xamarin Forms, ASP.NET Core, SQL Server en Azure y gestión en redes.",
       category: "Proactivo",
       image: ManuelImage,
-      color: "red"
+      color: "red",
+      path: "/manuel"
     },
     {
       id: 4,
