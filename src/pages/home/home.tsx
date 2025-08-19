@@ -1,8 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import "./home.css";
-import OscarImage from "../assets/home/Oscar.jpg";
-import mifoto from "./../assets/home/mifoto.png"
+import OscarImage from "../../assets/home/Oscar.jpg";
+import mifoto from "../../assets/home/Pablo.png"
 
 const Home: React.FC = () => {
   const portfolioItems = [

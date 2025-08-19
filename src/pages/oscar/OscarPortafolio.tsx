@@ -1,32 +1,32 @@
-import React, { useState, useEffect, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import "./OscarPortafolio.css";
 
 const myWork = [
   {
     id: 1,
     title: "Opieka",
-    path: "src/assets/oscar/opieka.png",
+    path: "src/assets/oscar/Opieka.png",
     url: "https://www.opieka.com/",
     select: "selected",
   },
   {
     id: 2,
     title: "Beneficiate",
-    path: "src/assets/oscar/beneficiate.png",
+    path: "src/assets/oscar/Beneficiate.png",
     url: "https://beneficiate.co/",
     select: "",
   },
   {
     id: 3,
     title: "Cuidame Tech",
-    path: "src/assets/oscar/cuidameTech.png",
+    path: "src/assets/oscar/CuidameTech.png",
     url: "https://cuidamehealth.com/",
     select: "",
   },
   {
     id: 4,
     title: "Prodomotic",
-    path: "src/assets/oscar/opieka.png",
+    path: "src/assets/oscar/Prodomotic.png",
     url: "https://prodomotic.com/",
     select: "",
   },
@@ -80,18 +80,22 @@ export default function OscarPortafolio(): React.ReactElement {
 
       <section className="card myWork">
         <div className="workContainer">
-          <div className="title">
-            <h1>Mi trabajo</h1>
-          </div>
-
           {myWork.map((item) => (
-            <div className={`workItem ${item.select}`} key={item.id}>
+            <div 
+              className={`workItem ${item.select}`} 
+              key={item.id}
+              onMouseEnter={() => hoverSelected(item.id)}
+            >
               <div className="titleContainer">
                 <h2>{item.title}</h2>
                 <i></i>
               </div>
-              <div className="imgContainer">
-                <img src={item.path} alt={item.title} className="workImg" />
+              <div className="previewContainer" onClick={() => window.open(item.url)} >
+                <img 
+                  src={item.path} 
+                  alt={item.title} 
+                  className="workImg" 
+                />
               </div>
             </div>
           ))}
@@ -110,9 +114,27 @@ export default function OscarPortafolio(): React.ReactElement {
         </nav>
       </section>
 
-      <section className="card div4">4</section>
+      <section className="card contactMe">
+        <div className="arriba">
+          <h3>Tienes alguna<br/>duda?</h3>
+          <img src="src/assets/oscar/arrow.png" alt="arrow" />
+        </div>
 
-      <section className="card div5">5</section>
+        <div className="abajo">
+          <h1>Contactame</h1>
+        </div>
+      </section>
+
+      <section className="card aboutMe">
+        <img src="src/assets/oscar/pincel.png" alt="decoration" />
+
+        <h3>
+          Soy un ingeniero en sistemas apasionado por crear experiencias web excepcionales. 
+          Aunque mi especialidad es el frontend, manejo el stack completo de desarrollo. 
+          Lo que me distingue es mi capacidad para generar ideas creativas que transforman 
+          proyectos y agregan valor real a cada solución que desarrollo.
+        </h3>
+      </section>
 
       <section className="card imageContainer">
         <img
