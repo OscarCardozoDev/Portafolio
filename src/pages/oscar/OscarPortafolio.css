@@ -48,10 +48,6 @@
   height: 100vh;
   width: 100vw;
   padding: 25px;
-  display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  grid-template-rows: repeat(8, 1fr);
-  gap: 25px;
 }
 
 .card {
@@ -68,9 +64,6 @@
   justify-content: space-between;
   padding: 0 2rem;
   box-shadow: 0px -5px 15px var(--shadows-color);
-  grid-column: span 12 / span 12;
-  grid-column-start: 1;
-  grid-row-start: 1;
 }
 
 .header h1 {
@@ -89,10 +82,6 @@
   display: flex;
   align-items: end;
   box-shadow: -5px 0px 15px var(--shadows-color);
-  grid-column: span 5 / span 5;
-  grid-row: span 4 / span 4;
-  grid-column-start: 1;
-  grid-row-start: 2;
 }
 
 .phraseContainer p {
@@ -113,10 +102,6 @@
 
 .myWork {
   box-shadow: 5px 0px 15px var(--shadows-color);
-  grid-column: span 4 / span 4;
-  grid-row: span 6 / span 6;
-  grid-column-start: 9;
-  grid-row-start: 2;
 }
 
 .workContainer {
@@ -180,10 +165,6 @@
   flex-direction: column;
   justify-content: space-between;
   box-shadow: 0px 5px 15px var(--shadows-color);
-  grid-column: span 4 / span 4;
-  grid-row: span 3 / span 3;
-  grid-column-start: 5;
-  grid-row-start: 6;
 }
 
 .arriba {
@@ -215,10 +196,6 @@
   flex-direction: column;
   justify-content: space-between;
   box-shadow: -5px 5px 15px var(--shadows-color);
-  grid-column: span 4 / span 4;
-  grid-row: span 3 / span 3;
-  grid-column-start: 1;
-  grid-row-start: 6;
 }
 
 .aboutMe img {
@@ -237,10 +214,6 @@
   background-color: var(--card-color-secondary);
   padding: 0;
   box-shadow: 0px 0px 15px var(--shadows-color);
-  grid-column: span 3 / span 3;
-  grid-row: span 4 / span 4;
-  grid-column-start: 6;
-  grid-row-start: 2;
 }
 
 .image {
@@ -254,9 +227,6 @@
   align-items: center;
   padding: 0 1rem;
   box-shadow: 5px 5px 15px var(--shadows-color);
-  grid-column: span 4 / span 4;
-  grid-column-start: 9;
-  grid-row-start: 8;
 }
 
 .socialMedia nav {
