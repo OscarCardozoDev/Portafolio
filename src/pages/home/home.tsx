@@ -1,8 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import "./home.css";
-import OscarImage from "../assets/home/Oscar.jpg";
-import mifoto from "./../assets/home/mifoto.png";
+import OscarImage from "../../assets/home/Oscar.jpg";
+import PabloImage from "../../assets/home/mifoto.png"
+import ManuelImage from "../../assets/home/Perfil-Silva.jpg"
 import elianaFoto from "../../assets/home/eliana.png";
 
 const Home: React.FC = () => {
@@ -12,9 +13,9 @@ const Home: React.FC = () => {
       title: "PABLO AGUILAR",
       description: "Especialzado en machine learning, el tratamiento de datos y el entrenamiento de inteligencias artificiales especializadas",
       category: "Machine Learning",
-      image: mifoto,
+      image: PabloImage,
       color: "gray",
-      path: "/PabloPage"
+      path: "/pablo"
     },
     {
       id: 2,
@@ -23,15 +24,16 @@ const Home: React.FC = () => {
       category: "Creativo",
       image: OscarImage,
       color: "blue",
-      path: "/OscarPage"
+      path: "/oscar"
     },
     {
       id: 3,
-      title: "YAMAHA SERVICIOS FINANCIEROS",
-      description: "Cuenta en quien confiar para hacer realidad tus planes de tener una Yamaha ahora en Colombia.",
-      category: "Financial Services",
-      image: "/api/placeholder/300/200",
-      color: "red"
+      title: "Manuel Silva",
+      description: "Desarrollador en formación con experiencia en aplicaciones móviles y servicios web, especializado en Xamarin Forms, ASP.NET Core, SQL Server en Azure y gestión en redes.",
+      category: "Proactivo",
+      image: ManuelImage,
+      color: "red",
+      path: "/manuel"
     },
     {
       id: 4,
@@ -40,7 +42,7 @@ const Home: React.FC = () => {
       category: "Project Management",
       image: elianaFoto,
       color: "purple",
-      path: "/ElianaPage"
+      path: "/eliana"
     }
   ];
 
@@ -102,5 +104,6 @@ const Home: React.FC = () => {
     </div>
   );
 };
+
 
 export default Home;
