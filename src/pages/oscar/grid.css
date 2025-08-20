@@ -51,6 +51,18 @@
   animation-delay: 1.05s;
 }
 
+.aboutMe span:nth-child(2) {
+  animation-delay: 1.75s;
+}
+
+.aboutMe span:nth-child(3) {
+  animation-delay: 2s;
+}
+
+.aboutMe span:nth-child(4) {
+  animation-delay: 2.25s;
+}
+
 .imageContainer {
   grid-column: span 3 / span 3;
   grid-row: span 4 / span 4;
@@ -70,6 +82,15 @@
   grid-column-start: 9;
   grid-row-start: 8;
   animation-delay: 1.2s;
+}
+
+h1 span, h3 span{
+  opacity: 0;
+  transform: scaleX(0);
+  transform-origin: left;
+  animation: textAppear 0.5s linear;
+  animation-fill-mode: forwards;
+  animation-delay: 1.5s;
 }
 
 @keyframes imageMoveInitial {
@@ -94,5 +115,16 @@
   }
   100% {
     transform: scale(1);
+  }
+}
+
+@keyframes textAppear {
+  0% {
+    opacity: 0;
+    transform: scaleX(0);
+  }
+  100% {
+    opacity: 1;
+    transform: scaleX(1);
   }
 }

@@ -2,7 +2,6 @@ import React, { useState, useEffect} from "react";
 import "./OscarPortafolio.css";
 import "./grid.css";
 
-
 const myWork = [
   {
     id: 1,
@@ -60,7 +59,7 @@ export default function OscarPortafolio(): React.ReactElement {
   return (
     <div className="parent">
       <header className="card header">
-        <h1>Oscar Cardozo</h1>
+        <h1><span>Oscar</span> <span>Cardozo</span></h1>
         <nav>
           <a href="">Pablo</a>
           <a href="">Eliana</a>
@@ -83,8 +82,8 @@ export default function OscarPortafolio(): React.ReactElement {
       <section className="card myWork">
         <div className="workContainer">
           {myWork.map((item) => (
-            <div 
-              className={`workItem ${item.select}`} 
+            <div
+              className={`workItem ${item.select}`}
               key={item.id}
               onMouseEnter={() => hoverSelected(item.id)}
             >
@@ -92,12 +91,11 @@ export default function OscarPortafolio(): React.ReactElement {
                 <h2>{item.title}</h2>
                 <i></i>
               </div>
-              <div className="previewContainer" onClick={() => window.open(item.url)} >
-                <img 
-                  src={item.path} 
-                  alt={item.title} 
-                  className="workImg" 
-                />
+              <div
+                className="previewContainer"
+                onClick={() => window.open(item.url)}
+              >
+                <img src={item.path} alt={item.title} className="workImg" />
               </div>
             </div>
           ))}
@@ -118,7 +116,11 @@ export default function OscarPortafolio(): React.ReactElement {
 
       <section className="card contactMe">
         <div className="arriba">
-          <h3>Tienes alguna<br/>duda?</h3>
+          <h3>
+            Tienes alguna
+            <br />
+            duda?
+          </h3>
           <img src="src/assets/oscar/arrow.png" alt="arrow" />
         </div>
 
@@ -131,10 +133,21 @@ export default function OscarPortafolio(): React.ReactElement {
         <img src="src/assets/oscar/pincel.png" alt="decoration" />
 
         <h3>
-          Soy un ingeniero en sistemas apasionado por crear experiencias web excepcionales. 
-          Aunque mi especialidad es el frontend, manejo el stack completo de desarrollo. 
-          Lo que me distingue es mi capacidad para generar ideas creativas que transforman 
-          proyectos y agregan valor real a cada solución que desarrollo.
+          <span>
+            Soy ingeniero en sistemas apasionado por crear experiencias web
+            excepcionales.{" "}
+          </span>
+          <span>
+            Aunque mi especialidad es el frontend, manejo el stack completo de
+            desarrollo.
+          </span>
+          <span>
+            Lo que me distingue es mi capacidad para generar ideas creativas que
+            transforman
+          </span>
+          <span>
+            proyectos y agregan valor real a cada solución que desarrollo.
+          </span>
         </h3>
       </section>
 
