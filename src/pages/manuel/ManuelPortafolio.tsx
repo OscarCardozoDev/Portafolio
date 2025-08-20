@@ -2,19 +2,48 @@ import React from 'react';
 import { Mail, Phone, MapPin, Github, Linkedin, ExternalLink } from 'lucide-react';
 import './ManuelPortafolio.css';
 import ManuelImage from "../../assets/home/Perfil-Silva.jpg"
+import waikiki from '../../assets/home/Waikiki-imagen.png'
+import Lyna from '../../assets/home/Lyna.png'
 
 const Portfolio = () => {
 
     const skills = [
-    { name: 'JavaScript', level: 70 },
     { name: 'Java', level: 90 },
     { name: 'C#', level: 80 },
     { name: 'Python', level: 65 },
-    { name: 'CSS', level: 65 },
     { name: 'SQL Server', level: 85 },
     { name: 'Blender', level: 75 },
     { name: 'Unity', level: 70 },
-    { name: 'Redes', level: 65 }
+    { name: 'Redes', level: 65 },
+    { name: 'Xamarin Forms', level: 70},
+    { name: 'ASP.NET Core', level: 65}
+  ];
+
+  const projects = [
+    {
+      title: 'Gestion de Cuentas',
+      description: 'App movil que apoya en la gestion de cuentas y clientes, desarrollada con Xamarin forms e integración de base de datos SQL Server en Azure.',
+      image: 'https://porcobrar.com/wp-content/uploads/2020/09/Gestio%CC%81n-de-cuentas-por-cobrar_Interior.webp',
+      tech: ['Xamarin Forms', 'ASP.NET Core', 'C#', 'SQL Server'],
+      demo: '#',
+      github: '#'
+    },
+    {
+      title: 'Asistente Virtual 3D',
+      description: 'un asistente virtual 3D inteligente, diseñado para acompañar, guiar y organizar la vida académica del estudiante de forma personalizada, inclusiva y humana.',
+      image: Lyna,
+      tech: ['Blender', 'Unity', 'C#'],
+      demo: '#',
+      github: '#'
+    },
+    {
+      title: 'Gestion de pedidos y reservas en un restaurante',
+      description: 'Pagina web para un restaurante, que permite realizar la gestion del negocio tanto como la reserva y los pedidos del cliente',
+      image: waikiki,
+      tech: ['HTML', 'JavaScrip', 'CSS', 'MySql'],
+      demo: '#',
+      github: '#'
+    }
   ];
     
     return (
@@ -84,6 +113,41 @@ const Portfolio = () => {
                     className="skill-progress" 
                     style={{ width: `${skill.level}%` }}
                   ></div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Projects Section */}
+      <section id="projects" className="section">
+        <div className="container">
+          <h2 className="section-title">Proyectos</h2>
+          <div className="projects-grid">
+            {projects.map((project, index) => (
+              <div key={index} className="project-card">
+                <div className="project-image">
+                  <img src={project.image} alt={project.title} />
+                  <div className="project-overlay">
+                    <div className="project-links">
+                      <a href={project.demo} className="project-link">
+                        <ExternalLink size={20} />
+                      </a>
+                      <a href={project.github} className="project-link">
+                        <Github size={20} />
+                      </a>
+                    </div>
+                  </div>
+                </div>
+                <div className="project-content">
+                  <h3 className="project-title">{project.title}</h3>
+                  <p className="project-description">{project.description}</p>
+                  <div className="project-tech">
+                    {project.tech.map((tech, techIndex) => (
+                      <span key={techIndex} className="tech-tag">{tech}</span>
+                    ))}
+                  </div>
                 </div>
               </div>
             ))}
