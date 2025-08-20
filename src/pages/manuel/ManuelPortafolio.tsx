@@ -155,6 +155,70 @@ const Portfolio = () => {
         </div>
       </section>
 
+      {/* Contact Section */}
+      <section id="contact" className="section contact-section">
+        <div className="container">
+          <h2 className="section-title">Contacto</h2>
+          <div className="contact-content">
+            <div className="contact-info">
+              <h3>¡Hablemos!</h3>
+              <p>
+                Estoy siempre abierto a nuevas oportunidades y proyectos interesantes. 
+                No dudes en contactarme si quieres colaborar o simplemente conversar sobre tecnología.
+              </p>
+              <div className="contact-items">
+                <div className="contact-item">
+                  <Mail className="contact-icon" />
+                  <span>alexissilva.22ruiz@gmail.com</span>
+                </div>
+                <div className="contact-item">
+                  <Phone className="contact-icon" />
+                  <span>+57 3134188383</span>
+                </div>
+                <div className="contact-item">
+                  <MapPin className="contact-icon" />
+                  <span>Piura, Piura, Perú</span>
+                </div>
+              </div>
+              <div className="social-links">
+                <a href="#" className="social-link">
+                  <Github size={24} />
+                </a>
+                <a href="https://www.linkedin.com/in/alexis-silva-ruiz-729187379" className="social-link">
+                  <Linkedin size={24} />
+                </a>
+              </div>
+            </div>
+            <div className="contact-form">
+              <div>
+                <div className="form-group">
+                  <input type="text" placeholder="Tu nombre" className="form-input" />
+                </div>
+                <div className="form-group">
+                  <input type="email" placeholder="Tu email" className="form-input" />
+                </div>
+                <div className="form-group">
+                  <input type="text" placeholder="Asunto" className="form-input" />
+                </div>
+                <div className="form-group">
+                  <textarea placeholder="Tu mensaje" className="form-input"></textarea>
+                </div>
+                <button type="button" className="btn btn-primary btn-full" onClick={() => alert('Mensaje enviado!')}>
+                  Enviar Mensaje
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="footer">
+        <div className="container">
+          <p>&copy; 2024 Manuel Silva. Todos los derechos reservados.</p>
+        </div>
+      </footer>
+
       /</div>
     );
 };
