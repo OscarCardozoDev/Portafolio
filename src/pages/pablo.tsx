@@ -3,6 +3,8 @@ import './pablo.css';
 import logoFlex from './../assets/home/logoFlex.png'
 import AnimFlix from './../assets/home/Animflix.png'
 import imagenDatos from './../assets/home/python-powerbi-data-science-1024x404.jpg'
+import ponencia from './../assets/home/ponencia.jpg'
+import mockups from './../assets/home/mockUps.png'
 
 interface Project {
   id: number;
@@ -50,7 +52,7 @@ const Portfolio: React.FC = () => {
       id: 1,
       title: 'Flex Drive',
       description: 'Colaboracion en la creacion de una plataforma de arrendamiento vehicular. a lo largo del proyecto colabore con la documentacion y creacion de modelos RAG para las preferencias de usuarios.',
-      technologies: ['python', 'Selenium', 'Sickit-learn', 'Pandas', 'Tensorflow'],
+      technologies: ['Python', 'Selenium', 'Sickit-learn', 'Pandas', 'Tensorflow'],
       image: logoFlex,
       demoUrl: 'https://demo.example.com',
       githubUrl: 'https://github.com/JorgeDanielRamirezNieves/Flex-Drive',
@@ -63,8 +65,8 @@ const Portfolio: React.FC = () => {
       technologies: ['React', 'Express'],
       image: AnimFlix,
       demoUrl: 'https://tasks.example.com',
-      githubUrl: 'https://github.com/usuario/tasks',
-      category: 'frontend'
+      githubUrl: 'https://github.com/RichardMolano/Animaflix',
+      category: 'backend'
     },
     {
       id: 3,
@@ -72,7 +74,7 @@ const Portfolio: React.FC = () => {
       description: 'se pidio una colaboracion con el tratamiento de datos de cobro de empresas de las regiones de Boyaca, Cundinamarca, Santander y Norte de Santander',
       technologies: ['Excel', 'Pandas','Numpy','Power Bi'],
       image: imagenDatos,
-      githubUrl: 'https://github.com/usuario/api',
+      demoUrl: 'https://github.com/usuario/api',
       category: 'backend'
     },
     {
@@ -80,9 +82,18 @@ const Portfolio: React.FC = () => {
       title: 'Multiples Ponencias',
       description: 'se realizo una serie de ponencias sobre temas de tecnologia y desarrollo de software en diversas universidades.',
       technologies: ['React', 'Node.js', 'JWT'],
-      image: '/api/placeholder/400/250',
-      demoUrl: 'https://analytics.example.com',
-      category: 'frontend'
+      image: ponencia,
+      githubUrl: 'https://drive.google.com/drive/folders/1bkMZHl63Yu_1C61YVJECaZ_QlSLQYMQR?usp=drive_link',
+      category: 'Investigacion'
+    }
+    ,
+    {
+      id: 5,
+      title: 'multi trabajo en la gobernacion de Boyaca',
+      description: 'a lo largo de 4 meses realize la practica laborar en la gobernacion del departamento de boyaca',
+      technologies: ['Python', 'Linux', 'JavaScript'],
+      image: mockups,
+      category: 'Investigacion'
     }
   ];
 
@@ -90,9 +101,9 @@ const Portfolio: React.FC = () => {
     { id: 'all', name: 'Todos', count: projects.length },
     { id: 'frontend', name: 'Frontend', count: projects.filter(p => p.category === 'frontend').length },
     { id: 'backend', name: 'Backend', count: projects.filter(p => p.category === 'backend').length },
-    { id: 'fullstack', name: 'Full Stack', count: projects.filter(p => p.category === 'fullstack').length },
-    { id: 'mobile', name: 'Mobile', count: projects.filter(p => p.category === 'mobile').length },
-    { id: 'devops', name: 'DevOps', count: projects.filter(p => p.category === 'devops').length },
+    { id: 'Python', name: 'Python', count: projects.filter(p => p.category === 'Python').length },
+    { id: 'React', name: 'React', count: projects.filter(p => p.category === 'React').length },
+
   ];
 
   const filteredProjects = selectedCategory === 'all' 
@@ -153,8 +164,7 @@ const Portfolio: React.FC = () => {
             </h1>
             <h2>Full Stack Developer</h2>
             <p>
-              Apasionado por la tecnología y la creatividad. Me especializo en desarrollo frontend con React 
-              y backend con Node.js/Nest.js, creando experiencias digitales excepcionales.
+              Apasionado por la tecnología y la creatividad. Me especializo en desarrollo de big data, Machine Learning y IA, creando experiencias digitales excepcionales sempre dispuesto a aprender.
             </p>
             <div className="hero-buttons">
               <button onClick={() => scrollToSection('projects')} className="btn-primary">
@@ -181,8 +191,7 @@ const Portfolio: React.FC = () => {
             <div className="about-text">
               <p>
                 Soy un desarrollador Full Stack con una fuerte pasión por crear aplicaciones web 
-                modernas y eficientes. Mi experiencia abarca desde el desarrollo frontend con React 
-                y TypeScript hasta el backend con Node.js y Nest.js.
+                modernas y eficientes. Mi experiencia abarca desde el desarrollo de inteligencia artificial, big data y Machine Learning,
               </p>
               <p>
                 Me encanta resolver problemas complejos y transformar ideas en soluciones digitales 
@@ -242,18 +251,7 @@ const Portfolio: React.FC = () => {
         <div className="container">
           <h2 className="section-title">Proyectos</h2>
           
-          {/* Category Filter */}
-          <div className="project-filters">
-            {categories.map((category) => (
-              <button
-                key={category.id}
-                onClick={() => setSelectedCategory(category.id)}
-                className={`filter-btn ${selectedCategory === category.id ? 'active' : ''}`}
-              >
-                {category.name} ({category.count})
-              </button>
-            ))}
-          </div>
+         
 
           {/* Projects Grid */}
           <div className="projects-grid">
