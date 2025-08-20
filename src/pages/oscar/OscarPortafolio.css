@@ -1,6 +1,7 @@
 :root {
   --bg-color: #fff2eb;
   --card-color: #af0000;
+  --card-color-secondary: #e77c7c;
   --shadows-color: #380000;
   --title-color: #ffe6e6;
   --text-color: #fff2eb;
@@ -47,10 +48,6 @@
   height: 100vh;
   width: 100vw;
   padding: 25px;
-  display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  grid-template-rows: repeat(8, 1fr);
-  gap: 25px;
 }
 
 .card {
@@ -67,9 +64,6 @@
   justify-content: space-between;
   padding: 0 2rem;
   box-shadow: 0px -5px 15px var(--shadows-color);
-  grid-column: span 12 / span 12;
-  grid-column-start: 1;
-  grid-row-start: 1;
 }
 
 .header h1 {
@@ -88,10 +82,6 @@
   display: flex;
   align-items: end;
   box-shadow: -5px 0px 15px var(--shadows-color);
-  grid-column: span 5 / span 5;
-  grid-row: span 4 / span 4;
-  grid-column-start: 1;
-  grid-row-start: 2;
 }
 
 .phraseContainer p {
@@ -112,52 +102,118 @@
 
 .myWork {
   box-shadow: 5px 0px 15px var(--shadows-color);
-  grid-column: span 4 / span 4;
-  grid-row: span 6 / span 6;
-  grid-column-start: 9;
-  grid-row-start: 2;
 }
 
-.workContainer{
-  height: 100%;
-    display: grid;
-    grid-template-columns: repeat(1, 1fr);
-    grid-template-rows: repeat(8, 1fr);
-    gap: 15px;
+.workContainer {
+  height: 110%;
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  grid-template-rows: repeat(8, 1fr);
+  gap: 15px;
 }
 
 .workItem {
-  background-color: #ffe6e6;
+  padding: 10px 25px;
+  border-bottom: 2px solid var(--title-color);
+  transition: all 0.3s ease-in-out;
+}
+
+.titleContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.titleContainer h2 {
+  font-family: "Fira";
+  font-size: 20px;
 }
 
 .selected {
   grid-row: span 4 / span 4;
 }
 
-.div4 {
-  box-shadow: 0px 5px 15px var(--shadows-color);
-  grid-column: span 4 / span 4;
-  grid-row: span 3 / span 3;
-  grid-column-start: 5;
-  grid-row-start: 6;
+.previewContainer {
+  height: 0;
+  display: flex;
+  justify-content: center;
+  overflow: hidden;
+  cursor: pointer;
+  transition: height 0.3s ease-in-out, margin 0.3s ease-in-out,
+    transform 0.3s ease-in-out;
 }
 
-.div5 {
+.previewContainer:hover {
+  transform: scale(1.02);
+}
+
+.previewContainer img {
+  width: 100%;
+  object-fit: fill;
+  border-radius: 15px;
+}
+
+.selected .previewContainer {
+  height: 250px;
+  margin: 15px 0;
+}
+
+.contactMe {
+  background-color: var(--card-color-secondary);
+  padding: 25px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: 0px 5px 15px var(--shadows-color);
+}
+
+.arriba {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.arriba h3 {
+  font-family: "Fira";
+  font-size: 15px;
+}
+
+.arriba img {
+  width: 40px;
+  filter: invert(1);
+  transform: rotate(225deg);
+}
+
+.abajo h1 {
+  font-family: "Chubbo";
+  font-size: 65px;
+  line-height: 1;
+}
+
+.aboutMe {
+  padding: 25px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   box-shadow: -5px 5px 15px var(--shadows-color);
-  grid-column: span 4 / span 4;
-  grid-row: span 3 / span 3;
-  grid-column-start: 1;
-  grid-row-start: 6;
+}
+
+.aboutMe img {
+  width: 50px;
+  filter: invert(1);
+}
+
+.aboutMe h3 {
+  width: 85%;
+  font-family: "Fira";
+  font-size: 14px;
 }
 
 /* Image Section */
 .imageContainer {
+  background-color: var(--card-color-secondary);
   padding: 0;
   box-shadow: 0px 0px 15px var(--shadows-color);
-  grid-column: span 3 / span 3;
-  grid-row: span 4 / span 4;
-  grid-column-start: 6;
-  grid-row-start: 2;
 }
 
 .image {
@@ -171,9 +227,6 @@
   align-items: center;
   padding: 0 1rem;
   box-shadow: 5px 5px 15px var(--shadows-color);
-  grid-column: span 4 / span 4;
-  grid-column-start: 9;
-  grid-row-start: 8;
 }
 
 .socialMedia nav {

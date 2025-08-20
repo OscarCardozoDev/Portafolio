@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import "./home.css";
 import OscarImage from "../../assets/home/Oscar.jpg";
-import mifoto from "../../assets/home/mifoto.png"
+import PabloImage from "../../assets/home/mifoto.png"
 import ManuelImage from "../../assets/home/Perfil-Silva.jpg"
 import elianaFoto from "../../assets/home/eliana.png";
 
@@ -13,7 +13,7 @@ const Home: React.FC = () => {
       title: "PABLO AGUILAR",
       description: "Especialzado en machine learning, el tratamiento de datos y el entrenamiento de inteligencias artificiales especializadas",
       category: "Machine Learning",
-      image: mifoto,
+      image: PabloImage,
       color: "gray",
       path: "/pablo"
     },
