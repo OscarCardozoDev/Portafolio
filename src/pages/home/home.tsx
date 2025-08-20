@@ -16,7 +16,7 @@ const Home: React.FC = () => {
       category: "Machine Learning",
       image: mifoto,
       color: "gray",
-      path: "/PabloPage"
+      path: "/pablo"
     },
     {
       id: 2,
@@ -25,7 +25,7 @@ const Home: React.FC = () => {
       category: "Creativo",
       image: OscarImage,
       color: "blue",
-      path: "/OscarPage"
+      path: "/oscar"
     },
     {
       id: 3,
@@ -43,7 +43,7 @@ const Home: React.FC = () => {
       category: "Project Management",
       image: elianaFoto,
       color: "purple",
-      path: "/ElianaPage"
+      path: "/eliana"
     }
   ];
 
@@ -105,5 +105,6 @@ const Home: React.FC = () => {
     </div>
   );
 };
+
 
 export default Home;
