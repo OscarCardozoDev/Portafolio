@@ -12,7 +12,8 @@ const Home: React.FC = () => {
       description: "Especialzado en machine learning, el tratamiento de datos y el entrenamiento de inteligencias artificiales especializadas",
       category: "Machine Learning",
       image: mifoto,
-      color: "purple"
+      color: "purple",
+      path: "/PabloPage"
     },
     {
       id: 2,
@@ -20,7 +21,8 @@ const Home: React.FC = () => {
       description: "Un apasionado por la tecnología y la creatividad. Me enfoco en el frontend, especializado en React y Nest.js.",
       category: "Creativo",
       image: OscarImage,
-      color: "blue"
+      color: "blue",
+      path: "/OscarPage"
     },
     {
       id: 3,
@@ -83,17 +85,10 @@ const Home: React.FC = () => {
 
               {/* Action button */}
               <div className="button-container">
-                {item.id === 1 ? (
-                  <Link to="/portfolio" className="enter-button">
+                  <Link to={`${item.path}`} className="enter-button">
                     ENTRAR
                   </Link>
-                  
-                 
-                ) : (
-                  <button className="enter-button">
-                    ENTRAR
-                  </button>
-                )}
+                )
               </div>
             </div>
 
