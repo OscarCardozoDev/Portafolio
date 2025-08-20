@@ -1,8 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import "./home.css";
-import OscarImage from "../assets/home/Oscar.jpg";
-import mifoto from "./../assets/home/mifoto.png"
+import OscarImage from "../../assets/home/Oscar.jpg";
+import mifoto from "../../assets/home/mifoto.png"
 
 const Home: React.FC = () => {
   const portfolioItems = [
@@ -13,7 +13,7 @@ const Home: React.FC = () => {
       category: "Machine Learning",
       image: mifoto,
       color: "purple",
-      path: "/PabloPage"
+      path: "/pablo"
     },
     {
       id: 2,
@@ -22,7 +22,7 @@ const Home: React.FC = () => {
       category: "Creativo",
       image: OscarImage,
       color: "blue",
-      path: "/OscarPage"
+      path: "/oscar"
     },
     {
       id: 3,

@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import './pablo.css';
-import logoFlex from './../assets/home/logoFlex.png'
-import AnimFlix from './../assets/home/Animflix.png'
-import imagenDatos from './../assets/home/python-powerbi-data-science-1024x404.jpg'
-import ponencia from './../assets/home/ponencia.jpg'
-import mockups from './../assets/home/mockUps.png'
+import logoFlex from './../../assets/home/logoFlex.png'
+import AnimFlix from './../../assets/home/Animflix.png'
+import imagenDatos from './../../assets/home/python-powerbi-data-science-1024x404.jpg'
+import ponencia from './../../assets/home/ponencia.jpg'
+import mockups from './../../assets/home/mockUps.png'
 
 interface Project {
   id: number;
