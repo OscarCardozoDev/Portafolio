@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import "./home.css";
 import OscarImage from "../../assets/home/Oscar.jpg";
 import mifoto from "../../assets/home/mifoto.png"
+import ManuelImage from "../../assets/home/Perfil-Silva.jpg"
+import elianaFoto from "../../assets/home/eliana.png";
 
 const Home: React.FC = () => {
   const portfolioItems = [
@@ -12,7 +14,7 @@ const Home: React.FC = () => {
       description: "Especialzado en machine learning, el tratamiento de datos y el entrenamiento de inteligencias artificiales especializadas",
       category: "Machine Learning",
       image: mifoto,
-      color: "purple",
+      color: "gray",
       path: "/pablo"
     },
     {
@@ -26,19 +28,21 @@ const Home: React.FC = () => {
     },
     {
       id: 3,
-      title: "YAMAHA SERVICIOS FINANCIEROS",
-      description: "Cuenta en quien confiar para hacer realidad tus planes de tener una Yamaha ahora en Colombia.",
-      category: "Financial Services",
-      image: "/api/placeholder/300/200",
-      color: "red"
+      title: "Manuel Silva",
+      description: "Desarrollador en formación con experiencia en aplicaciones móviles y servicios web, especializado en Xamarin Forms, ASP.NET Core, SQL Server en Azure y gestión en redes.",
+      category: "Proactivo",
+      image: ManuelImage,
+      color: "red",
+      path: "/manuel"
     },
     {
       id: 4,
-      title: "BICICLETAS YAMAHA",
-      description: "Venimos las mejores como marca japonesa y mantenemos de liderazgo brindando experiencias integrales que respondan a nuestros clientes.",
-      category: "Bicycles",
-      image: "/api/placeholder/300/200",
-      color: "gray"
+      title: "ELIANA REYES",
+      description: "Estudiante de Ingeniería de Sistemas apasionada por la gestión de proyectos y el desarrollo de soluciones tecnológicas innovadoras.",
+      category: "Project Management",
+      image: elianaFoto,
+      color: "purple",
+      path: "/eliana"
     }
   ];
 
@@ -100,5 +104,6 @@ const Home: React.FC = () => {
     </div>
   );
 };
+
 
 export default Home;
