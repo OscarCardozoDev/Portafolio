@@ -1,0 +1,130 @@
+.parent {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  grid-template-rows: repeat(8, 1fr);
+  gap: 25px;
+}
+
+.card {
+  transform: scale(0);
+  transform-origin: center center;
+  animation: cardMoveInitial 0.3s linear;
+  animation-fill-mode: forwards;
+}
+
+.header {
+  grid-column: span 12 / span 12;
+  grid-column-start: 1;
+  grid-row-start: 1;
+  animation-delay: 1.25s;
+}
+
+.phraseContainer {
+  grid-column: span 5 / span 5;
+  grid-row: span 4 / span 4;
+  grid-column-start: 1;
+  grid-row-start: 2;
+  animation-delay: 1.15s;
+}
+
+.myWork {
+  grid-column: span 4 / span 4;
+  grid-row: span 6 / span 6;
+  grid-column-start: 9;
+  grid-row-start: 2;
+  animation-delay: 1s;
+}
+
+.contactMe {
+  grid-column: span 4 / span 4;
+  grid-row: span 3 / span 3;
+  grid-column-start: 5;
+  grid-row-start: 6;
+  animation-delay: 1.3s;
+}
+
+.aboutMe {
+  grid-column: span 4 / span 4;
+  grid-row: span 3 / span 3;
+  grid-column-start: 1;
+  grid-row-start: 6;
+  animation-delay: 1.05s;
+}
+
+.aboutMe span:nth-child(2) {
+  animation-delay: 1.75s;
+}
+
+.aboutMe span:nth-child(3) {
+  animation-delay: 2s;
+}
+
+.aboutMe span:nth-child(4) {
+  animation-delay: 2.25s;
+}
+
+.imageContainer {
+  grid-column: span 3 / span 3;
+  grid-row: span 4 / span 4;
+  grid-column-start: 6;
+  grid-row-start: 2;
+
+  transform: scale(1.2);
+  top: 25%;
+  right: 20%;
+  animation: imageMoveInitial 0.75s linear;
+  animation-delay: 0.5s;
+  animation-fill-mode: forwards;
+}
+
+.socialMedia {
+  grid-column: span 4 / span 4;
+  grid-column-start: 9;
+  grid-row-start: 8;
+  animation-delay: 1.2s;
+}
+
+h1 span, h3 span{
+  opacity: 0;
+  transform: scaleX(0);
+  transform-origin: left;
+  animation: textAppear 0.5s linear;
+  animation-fill-mode: forwards;
+  animation-delay: 1.5s;
+}
+
+@keyframes imageMoveInitial {
+  0% {
+    transform: scale(1.2);
+  }
+  50% {
+    transform: scale(1);
+    top: 25%;
+    right: 20%;
+  }
+  100% {
+    transform: scale(1);
+    top: 0px;
+    right: 0px;
+  }
+}
+
+@keyframes cardMoveInitial {
+  0% {
+    transform: scale(0);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes textAppear {
+  0% {
+    opacity: 0;
+    transform: scaleX(0);
+  }
+  100% {
+    opacity: 1;
+    transform: scaleX(1);
+  }
+}
