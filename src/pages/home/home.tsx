@@ -5,7 +5,6 @@ import OscarImage from "../../assets/home/Oscar.jpg";
 import mifoto from "../../assets/home/mifoto.png"
 import ManuelImage from "../../assets/home/Perfil-Silva.jpg"
 import elianaFoto from "../../assets/home/eliana.png";
-//Fusion de ambos cambios
 
 const Home: React.FC = () => {
   const portfolioItems = [
