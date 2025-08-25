@@ -1,4 +1,3 @@
-import React from 'react';
 import { Mail, Phone, MapPin, Github, Linkedin, ExternalLink } from 'lucide-react';
 import './ManuelPortafolio.css';
 import ManuelImage from "../../assets/home/Perfil-Silva.jpg"
