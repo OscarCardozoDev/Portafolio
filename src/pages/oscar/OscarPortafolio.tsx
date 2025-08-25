@@ -1,4 +1,4 @@
-import React, { useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import "./OscarPortafolio.css";
 import "./grid.css";
 
@@ -35,6 +35,23 @@ const myWork = [
 
 export default function OscarPortafolio(): React.ReactElement {
   const [selected, setSelected] = useState<string>("selected");
+  const [isMobile, setIsMobile] = useState<boolean>(false);
+
+  // Hook para detectar el tamaño de pantalla
+  useEffect(() => {
+    const checkScreenSize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    // Verificar al montar el componente
+    checkScreenSize();
+
+    // Añadir listener para cambios de tamaño
+    window.addEventListener('resize', checkScreenSize);
+
+    // Cleanup del listener
+    return () => window.removeEventListener('resize', checkScreenSize);
+  }, []);
 
   function hoverSelected(id: number) {
     setSelected(id.toString());
@@ -58,21 +75,25 @@ export default function OscarPortafolio(): React.ReactElement {
 
   return (
     <div className="parent">
-      <header className="card header">
+      <header className="card headerOscar">
         <h1><span>Oscar</span> <span>Cardozo</span></h1>
-        <nav>
-          <a href="">Pablo</a>
-          <a href="">Eliana</a>
-          <a href="">Manuel</a>
-        </nav>
       </header>
 
       <section className="card phraseContainer">
-        <img
-          src="src/assets/oscar/mandala.png"
-          alt="mandala"
-          className="mandalaImg"
-        />
+        {/* Imagen condicional según el tamaño de pantalla */}
+        {isMobile ? (
+          <img
+            src="src/assets/oscar/mandala.png"
+            alt="mandala"
+            className="mandalaImg"
+          />
+        ) : (
+          <img
+            src="src/assets/oscar/mandala.png"
+            alt="mandala"
+            className="mandalaImg"
+          />
+        )}
         <p>
           Siempre en busca de nuevos desafios que me obliguen a mejorar como
           ingeniero y persona
@@ -152,6 +173,7 @@ export default function OscarPortafolio(): React.ReactElement {
       </section>
 
       <section className="card imageContainer">
+        {/* Imagen condicional - en móvil podría mostrar algo diferente */}
         <img
           src="src/assets/oscar/portafolioImg.png"
           alt="Oscar Cardozo"

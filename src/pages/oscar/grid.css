@@ -1,3 +1,7 @@
+/* ========================================
+   DESKTOP LAYOUT (Original)
+   ======================================== */
+
 .parent {
   display: grid;
   grid-template-columns: repeat(12, 1fr);
@@ -12,7 +16,7 @@
   animation-fill-mode: forwards;
 }
 
-.header {
+.headerOscar {
   grid-column: span 12 / span 12;
   grid-column-start: 1;
   grid-row-start: 1;
@@ -68,7 +72,6 @@
   grid-row: span 4 / span 4;
   grid-column-start: 6;
   grid-row-start: 2;
-
   transform: scale(1.2);
   top: 25%;
   right: 20%;
@@ -84,7 +87,7 @@
   animation-delay: 1.2s;
 }
 
-h1 span, h3 span{
+h1 span, h3 span {
   opacity: 0;
   transform: scaleX(0);
   transform-origin: left;
@@ -92,6 +95,10 @@ h1 span, h3 span{
   animation-fill-mode: forwards;
   animation-delay: 1.5s;
 }
+
+/* ========================================
+   ANIMACIONES
+   ======================================== */
 
 @keyframes imageMoveInitial {
   0% {
@@ -126,5 +133,224 @@ h1 span, h3 span{
   100% {
     opacity: 1;
     transform: scaleX(1);
+  }
+}
+
+/* ========================================
+   RESPONSIVE BREAKPOINTS
+   ======================================== */
+
+/* Tablet Grande - 1024px y abajo */
+@media (max-width: 1024px) {
+  .parent {
+    gap: 20px;
+  }
+  
+  .phraseContainer {
+    grid-column: span 6 / span 6;
+  }
+  
+  .imageContainer {
+    grid-column: span 2 / span 2;
+  }
+}
+
+/* Tablet - 768px y abajo */
+@media (max-width: 768px) {
+  .parent {
+    grid-template-columns: repeat(8, 1fr);
+    grid-template-rows: repeat(12, 1fr);
+    gap: 8px;
+  }
+
+  /* div1 - headerOscar completo */
+  .headerOscar {
+    grid-column: span 8 / span 8;
+    grid-column-start: 1;
+    grid-row-start: 1;
+  }
+
+  /* div2 - Phrase Container */
+  .phraseContainer {
+    grid-column: span 5 / span 5;
+    grid-row: span 4 / span 4;
+    grid-column-start: 1;
+    grid-row-start: 2;
+  }
+
+  /* div3 - My Work */
+  .myWork {
+    grid-column: span 3 / span 3;
+    grid-row: span 5 / span 5;
+    grid-column-start: 6;
+    grid-row-start: 2;
+  }
+
+  /* div4 - About Me */
+  .aboutMe {
+    grid-column: span 3 / span 3;
+    grid-row: span 3 / span 3;
+    grid-column-start: 1;
+    grid-row-start: 6;
+  }
+
+  /* div5 - Contact Me */
+  .contactMe {
+    grid-column: span 2 / span 2;
+    grid-row: span 3 / span 3;
+    grid-column-start: 4;
+    grid-row-start: 6;
+  }
+
+  /* div6 - Image Container */
+  .imageContainer {
+    grid-column: span 3 / span 3;
+    grid-row: span 2 / span 2;
+    grid-column-start: 6;
+    grid-row-start: 7;
+    transform: scale(1);
+    top: 0;
+    right: 0;
+    animation: none;
+  }
+
+  /* div7 - Social Media */
+  .socialMedia {
+    grid-column: span 8 / span 8;
+    grid-column-start: 1;
+    grid-row-start: 9;
+  }
+}
+
+/* Mobile - 480px y abajo */
+@media (max-width: 480px) {
+  .parent {
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(7, auto);
+    gap: 10px;
+  }
+
+  .headerOscar {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .phraseContainer {
+    grid-column: 1;
+    grid-row: 2;
+  }
+
+  .imageContainer {
+    grid-column: 1;
+    grid-row: 3;
+    transform: scale(1);
+    top: 0;
+    right: 0;
+    animation: none;
+  }
+
+  .myWork {
+    grid-column: 1;
+    grid-row: 4;
+  }
+
+  .aboutMe {
+    grid-column: 1;
+    grid-row: 5;
+  }
+
+  .contactMe {
+    grid-column: 1;
+    grid-row: 6;
+  }
+
+  .socialMedia {
+    grid-column: 1;
+    grid-row: 7;
+  }
+
+  /* Desactivar animaciones complejas en móvil */
+  .card {
+    animation: cardMoveInitialMobile 0.2s ease-out;
+    animation-fill-mode: forwards;
+  }
+
+  h1 span, h3 span {
+    animation: textAppearMobile 0.3s ease-out;
+    animation-fill-mode: forwards;
+  }
+
+  /* Ajustar delays para móvil */
+  .headerOscar { animation-delay: 0.1s; }
+  .phraseContainer { animation-delay: 0.2s; }
+  .imageContainer { animation-delay: 0.3s; }
+  .myWork { animation-delay: 0.4s; }
+  .aboutMe { animation-delay: 0.5s; }
+  .contactMe { animation-delay: 0.6s; }
+  .socialMedia { animation-delay: 0.7s; }
+}
+
+/* ========================================
+   ANIMACIONES MOBILE OPTIMIZADAS
+   ======================================== */
+
+@media (max-width: 480px) {
+  @keyframes cardMoveInitialMobile {
+    0% {
+      transform: scale(0.8);
+      opacity: 0;
+    }
+    100% {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+
+  @keyframes textAppearMobile {
+    0% {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
+
+/* ========================================
+   UTILIDADES RESPONSIVE
+   ======================================== */
+
+/* Ocultar elementos en móvil si es necesario */
+@media (max-width: 480px) {
+  .phraseContainer .mandalaImg {
+    display: none;
+  }
+}
+
+/* Ajustar tamaños de fuente responsive */
+@media (max-width: 768px) {
+  .headerOscar h1 {
+    font-size: clamp(24px, 4vw, 30px);
+  }
+  
+  .phraseContainer p {
+    font-size: clamp(28px, 6vw, 40px);
+  }
+  
+  .abajo h1 {
+    font-size: clamp(45px, 10vw, 65px);
+  }
+}
+
+@media (max-width: 480px) {
+  .headerOscar nav a {
+    font-size: clamp(16px, 4vw, 20px);
+    margin: 0 5px;
+  }
+  
+  .workContainer {
+    gap: 10px;
   }
 }

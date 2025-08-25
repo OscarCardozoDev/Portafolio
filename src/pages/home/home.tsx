@@ -1,10 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import "./home.css";
-import OscarImage from "../../assets/home/Oscar.jpg";
-import PabloImage from "../../assets/home/mifoto.png"
-import ManuelImage from "../../assets/home/Perfil-Silva.jpg"
-import elianaFoto from "../../assets/home/eliana.png";
+import OscarImage from "@/assets/home/Oscar.jpg";
+import PabloImage from "@/assets/home/Pablo.png"
+import ManuelImage from "@/assets/home/Perfil-Silva.jpg"
+import elianaFoto from "@/assets/home/foto_eliana.png";
 
 const Home: React.FC = () => {
   const portfolioItems = [
