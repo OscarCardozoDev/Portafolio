@@ -25,7 +25,7 @@ interface Skill {
 
 const Portfolio: React.FC = () => {
   const [activeSection, setActiveSection] = useState('about');
-  const [selectedCategory, setSelectedCategory] = useState('all');
+  const [selectedCategory] = useState('all');
 
   const skills: Skill[] = [
     { name: 'React', level: 90, category: 'Frontend' },
@@ -95,15 +95,6 @@ const Portfolio: React.FC = () => {
       image: mockups,
       category: 'Investigacion'
     }
-  ];
-
-  const categories = [
-    { id: 'all', name: 'Todos', count: projects.length },
-    { id: 'frontend', name: 'Frontend', count: projects.filter(p => p.category === 'frontend').length },
-    { id: 'backend', name: 'Backend', count: projects.filter(p => p.category === 'backend').length },
-    { id: 'Python', name: 'Python', count: projects.filter(p => p.category === 'Python').length },
-    { id: 'React', name: 'React', count: projects.filter(p => p.category === 'React').length },
-
   ];
 
   const filteredProjects = selectedCategory === 'all' 
