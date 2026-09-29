@@ -1,1 +1,31 @@
 @import "tailwindcss";
+/* Google Fonts loaded from index.html <link> tags, not @import here:
+   Tailwind's Vite plugin silently drops a sibling @import next to
+   "@import tailwindcss" during compilation. */
+
+/* "Vintage Cafeteria" palette: dark espresso backdrop, cream cards so the bento grid pops */
+@theme {
+  --color-bg: #241a10;
+  --color-surface: #f1e2ba;
+  --color-shadows: #1a120a;
+  --color-text: #33241a;
+  --color-text-muted: #6b5540;
+  --color-accent: #6e9b9f;
+  --color-accent-ink: #1a120a;
+
+  --color-teal: #6e9b9f;
+  --color-rust: #b97256;
+  --color-mustard: #c9a050;
+  --color-avocado: #8a9370;
+
+  --font-display: "Monoton", cursive;
+  --font-body: "Outfit", sans-serif;
+}
+
+/* Dark-mode toggle overrides (applied via [data-theme="dark"] on the page root) */
+[data-theme="dark"] {
+  --color-bg: #120c07;
+  --color-surface: #2b2015;
+  --color-text: #f1e2ba;
+  --color-text-muted: #b8a888;
+}
