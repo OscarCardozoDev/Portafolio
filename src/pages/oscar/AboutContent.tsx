@@ -147,7 +147,7 @@ const events: Event[] = [
 ];
 
 const languages = [
-  { name: "Inglés", level: "Alto", steps: 2, text: "Nivel B2 (Proficiency in English) en Blighty Bliss, Instituto Británico de Inglés, Tunja. 210 horas, 2020.", docs: [{ label: "Diploma", url: "/Diploma_Bligthy_Bliss.pdf" }] },
+  { name: "Inglés", level: "Alto", steps: 2, text: "Nivel B2 (Proficiency in English) en Blighty Bliss, Instituto Británico de Inglés, Tunja. 210 horas, 2020.", docs: [{ label: "Diploma", url: "/Certificados/Diploma_Bligthy_Bliss.pdf" }] },
   { name: "Español", level: "Nativo", steps: 3, text: "Lengua materna." },
   { name: "Coreano", level: "Básico", steps: 1, text: "Aprendido durante el intercambio académico en Corea del Sur." },
 ];
