@@ -420,6 +420,11 @@
   .circularBadge { width: 76px; height: 76px; }
   .imageContainer { min-height: 0; height: min(120vw, 75dvh); }
   .myWork { min-height: 420px; }
+  /* Professional info first: photo, then bio, then work; the tagline moves down to the bio's old slot */
+  .imageContainer { order: 1; }
+  .aboutMe { order: 2; }
+  .myWork { order: 3; }
+  .phraseContainer, .contactMe, .socialMedia { order: 4; }
   .panel, .aboutPanel { padding: 56px 20px 40px; }
   .aboutPanel .closeBtn { margin: -40px -8px 0 0; }
   .workPanelHero { height: 30%; min-height: 150px; }

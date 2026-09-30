@@ -218,8 +218,19 @@
   .personal .split,
   .personal .split.flip,
   .personal .pair {
-    grid-template-columns: 1fr;
+    /* minmax(0, …): a plain 1fr won't shrink below the gallery's thumb row, which pushed Korea off-screen */
+    grid-template-columns: minmax(0, 1fr);
     gap: 32px;
+  }
+  /* Brewing methods: one per row so the big display names don't clip */
+  .split > .tiles {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .split > .tiles .tile {
+    min-height: 0;
+    flex-direction: row;
+    align-items: baseline;
+    justify-content: space-between;
   }
   .personal .pair > div {
     padding: 0;

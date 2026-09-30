@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useLayoutEffect, useRef, useState, useSyncExternalStore } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import AboutContent from "./AboutContent";
 import PersonalContent from "./PersonalContent";
@@ -226,6 +226,21 @@ const T_MOVE = 650;
 const T_SIBLINGS = 550;
 const T_GROW = 750;
 const T_CONTENT = 450;
+const T_RISE = 1100; // mobile intro: photo rises from below to the top, then settles into place
+const T_SHEET = 500; // mobile modal: slides up from the bottom, back down on close
+
+// Stacked (phone) layout breakpoint, kept in sync with OscarPortafolio.css.
+const STACKED = "(max-width: 900px)";
+function useStacked() {
+  return useSyncExternalStore(
+    (cb) => {
+      const m = window.matchMedia(STACKED);
+      m.addEventListener("change", cb);
+      return () => m.removeEventListener("change", cb);
+    },
+    () => window.matchMedia(STACKED).matches,
+  );
+}
 
 // Each card hides/reappears with its own offset (like the load-in stagger)
 // instead of all of them fading as one flat block.
@@ -280,10 +295,13 @@ export default function OscarPortafolio(): React.ReactElement {
   const [activeProjectId, setActiveProjectId] = useState<number | null>(null);
   const [hoverProjectId, setHoverProjectId] = useState(1);
   const [stage, setStage] = useState<Stage>(null);
-  // Stacked layout (≤900px) puts the photo below the fold, so the fly-in from center is skipped like reduced motion.
-  const reduced = typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce), (max-width: 900px)").matches;
+  const reduced = typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  // Live value drives the modal style; the intro style is fixed by the layout at load.
+  const stacked = useStacked();
+  const [introStacked] = useState(stacked);
   const [intro, setIntro] = useState<"center" | "moving" | "done">(reduced ? "done" : "center");
-  const [offset, setOffset] = useState<{ x: number; y: number } | null>(reduced ? { x: 0, y: 0 } : null);
+  // Desktop: x/y = offset from grid cell to screen center. Stacked: y = offset to screen top, from = offset from below the screen.
+  const [offset, setOffset] = useState<{ x: number; y: number; from?: number } | null>(reduced ? { x: 0, y: 0 } : null);
   const [ready, setReady] = useState(reduced);
   const photoRef = useRef<HTMLElement>(null);
   const timers = useRef<number[]>([]);
@@ -291,14 +309,27 @@ export default function OscarPortafolio(): React.ReactElement {
   useLayoutEffect(() => {
     const el = photoRef.current;
     if (!el || reduced) return;
+    if (introStacked) {
+      const top = el.offsetTop - window.scrollY; // offsetTop ignores the initial transform
+      setOffset({ x: 0, y: 12 - top, from: window.innerHeight - top });
+      return;
+    }
     setOffset({
       x: window.innerWidth / 2 - (el.offsetLeft + el.offsetWidth / 2),
       y: window.innerHeight / 2 - (el.offsetTop + el.offsetHeight / 2),
     });
-  }, [reduced]);
+  }, [reduced, introStacked]);
 
   useEffect(() => {
     if (reduced || !offset) return;
+    if (introStacked) {
+      // Rest of the grid appears only once the photo has settled.
+      const d = window.setTimeout(() => {
+        setReady(true);
+        setIntro("done");
+      }, T_RISE);
+      return () => window.clearTimeout(d);
+    }
     const a = window.setTimeout(() => setIntro("moving"), T_CENTER + T_HOLD);
     const r = window.setTimeout(() => setReady(true), T_CENTER + T_HOLD + T_MOVE * 0.7);
     const b = window.setTimeout(() => setIntro("done"), T_CENTER + T_HOLD + T_MOVE);
@@ -307,7 +338,7 @@ export default function OscarPortafolio(): React.ReactElement {
       window.clearTimeout(r);
       window.clearTimeout(b);
     };
-  }, [reduced, offset]);
+  }, [reduced, offset, introStacked]);
 
   const t = dict[lang];
   const tr = (x: T) => x[lang];
@@ -335,6 +366,7 @@ export default function OscarPortafolio(): React.ReactElement {
     clearTimers();
     savedScroll.current = window.scrollY;
     setExpandedId(id);
+    if (stacked) return; // mobile: the sheet slides in on its own, no staged expand
     setStage("closing");
     timers.current.push(
       window.setTimeout(() => setStage("growing"), SIBLINGS_TOTAL),
@@ -344,6 +376,12 @@ export default function OscarPortafolio(): React.ReactElement {
   }
 
   function closeCard() {
+    if (stacked) {
+      // AnimatePresence keeps the last-rendered sheet for its slide-down, so state can clear now.
+      setExpandedId(null);
+      setActiveProjectId(null);
+      return;
+    }
     if (stage !== "open") return;
     clearTimers();
     setStage("content-out");
@@ -367,9 +405,11 @@ export default function OscarPortafolio(): React.ReactElement {
     default: { duration: T_SIBLINGS / 1000, delay: CARD_ORDER[id] * STAGGER },
   });
 
+  // Mobile modals slide over the grid, so nothing in it hides or expands.
+  const hideSiblings = expandedId !== null && !stacked;
   const cardState = (id: ExpandableId) => {
-    const isExpanding = expandedId === id;
-    const isHidden = expandedId !== null && expandedId !== id;
+    const isExpanding = expandedId === id && !stacked;
+    const isHidden = hideSiblings && expandedId !== id;
     const wantFull = isExpanding && stage !== "closing" && stage !== "shrinking" && stage !== null;
     const showContent = isExpanding && (stage === "content-in" || stage === "open");
     return { isExpanding, isHidden, wantFull, showContent };
@@ -383,6 +423,82 @@ export default function OscarPortafolio(): React.ReactElement {
 
   const activeProject = myWork.find((p) => p.id === activeProjectId) ?? null;
 
+  // Expanded content, shared by the desktop grow-in-place cards and the mobile slide-up sheet.
+  const renderPanel = (id: ExpandableId, show: boolean) => {
+    const fade = stacked ? {} : { initial: { opacity: 0 }, animate: { opacity: show ? 1 : 0 }, exit: { opacity: 0 }, transition: { duration: T_CONTENT / 1000 } };
+    const close = (
+      <button type="button" className="iconBtn closeBtn" aria-label={t.closeLabel} onClick={(e) => { e.stopPropagation(); closeCard(); }}>✕</button>
+    );
+    if (id === "work") {
+      return (
+        <motion.div key="expanded" className="panel workPanel" {...fade}>
+          {activeProject && (
+            <>
+              <div className="workPanelHero" style={{ background: activeProject.color }}>
+                <h2 className="workPanelTitle">{activeProject.title}</h2>
+                {close}
+              </div>
+              <div className="workPanelBody">
+                <p className="panelLine">{t.roleLabel}: {tr(activeProject.role)}</p>
+                <p className="panelLine">{t.stackLabel}: {activeProject.stack}</p>
+                <p className="panelBody">{tr(activeProject.summary)}</p>
+                {activeProject.highlights && (
+                  <ul className="highlightList">
+                    {activeProject.highlights.map((h) => (
+                      <li key={h.en}>{tr(h)}</li>
+                    ))}
+                  </ul>
+                )}
+                {activeProject.clients && (
+                  <div className="clientList">
+                    {activeProject.clients.map((c) => (
+                      <div className="clientItem" key={c.name.en}>
+                        <span className="clientName">{tr(c.name)}</span>
+                        <span className="clientDesc">{tr(c.description)}</span>
+                        {c.highlights && (
+                          <ul className="highlightList">
+                            {c.highlights.map((h) => (
+                              <li key={h.en}>{tr(h)}</li>
+                            ))}
+                          </ul>
+                        )}
+                        {c.url && (
+                          <a className="clientLink" href={c.url} target="_blank" rel="noopener noreferrer">
+                            {c.url.replace(/^https?:\/\//, "").replace(/\/$/, "")}
+                          </a>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                )}
+                {activeProject.url && (
+                  <a className="liveLink" href={activeProject.url} target="_blank" rel="noopener noreferrer">
+                    {t.liveLink}
+                  </a>
+                )}
+                {activeProject.links && (
+                  <div className="linkRow">
+                    {activeProject.links.map((l) => (
+                      <a key={l.url} className="liveLink" href={l.url} target="_blank" rel="noopener noreferrer">
+                        {tr(l.label)}
+                      </a>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </>
+          )}
+        </motion.div>
+      );
+    }
+    return (
+      <motion.div key="expanded" className="panel aboutPanel" {...fade}>
+        {close}
+        {id === "phrase" ? <PersonalContent tagline={t.tagline} philosophy={t.philosophy} /> : id === "about" ? <AboutContent /> : <ContactContent />}
+      </motion.div>
+    );
+  };
+
   return (
     <LangContext.Provider value={lang}>
     <div className="parent bg-bg" data-theme={dark ? "dark" : undefined}>
@@ -392,9 +508,9 @@ export default function OscarPortafolio(): React.ReactElement {
         ref={headerGlow}
         className="card headerOscar bg-surface text-text magicCard"
         initial={{ opacity: 0, scale: 0.85 }}
-        animate={{ opacity: expandedId || !ready ? 0 : 1, scale: expandedId || !ready ? 0 : 1 }}
+        animate={{ opacity: hideSiblings || !ready ? 0 : 1, scale: hideSiblings || !ready ? 0 : 1 }}
         transition={{ duration: T_SIBLINGS / 1000, delay: CARD_ORDER.header * STAGGER }}
-        style={{ pointerEvents: expandedId ? "none" : "auto" }}
+        style={{ pointerEvents: hideSiblings ? "none" : "auto" }}
       >
         <span className="magicGlow" />
         <h1 className="headerName">Oscar Javier Cardozo Diaz</h1>
@@ -437,10 +553,7 @@ export default function OscarPortafolio(): React.ReactElement {
                   <p className="tagline">{t.tagline}</p>
                 </motion.div>
               ) : (
-                <motion.div key="expanded" className="panel aboutPanel" initial={{ opacity: 0 }} animate={{ opacity: s.showContent ? 1 : 0 }} exit={{ opacity: 0 }} transition={{ duration: T_CONTENT / 1000 }}>
-                  <button type="button" className="iconBtn closeBtn" aria-label={t.closeLabel} onClick={(e) => { e.stopPropagation(); closeCard(); }}>✕</button>
-                  <PersonalContent tagline={t.tagline} philosophy={t.philosophy} />
-                </motion.div>
+                renderPanel("phrase", s.showContent)
               )}
             </AnimatePresence>
           </motion.section>
@@ -454,21 +567,27 @@ export default function OscarPortafolio(): React.ReactElement {
         initial={
           reduced
             ? { opacity: 0, scale: 0.85 }
-            : { opacity: 0, scale: 0.6, x: offset?.x ?? 0, y: offset?.y ?? 0 }
+            : introStacked
+              ? { opacity: 1, scale: 1, x: 0, y: offset?.from ?? 0 }
+              : { opacity: 0, scale: 0.6, x: offset?.x ?? 0, y: offset?.y ?? 0 }
         }
         animate={
           intro === "center" && !reduced
-            ? { opacity: 1, scale: 1.15, x: offset?.x ?? 0, y: offset?.y ?? 0 }
-            : { opacity: expandedId ? 0 : 1, scale: expandedId ? 0 : 1, x: 0, y: 0 }
+            ? introStacked
+              ? { y: [offset?.from ?? 0, offset?.y ?? 0, 0] } // below screen → top of screen → its grid slot
+              : { opacity: 1, scale: 1.15, x: offset?.x ?? 0, y: offset?.y ?? 0 }
+            : { opacity: hideSiblings ? 0 : 1, scale: hideSiblings ? 0 : 1, x: 0, y: 0 }
         }
         transition={
-          intro === "center"
+          intro === "center" && introStacked
+            ? { duration: T_RISE / 1000, times: [0, 0.6, 1], ease: [[0.2, 0.7, 0.3, 1], [0.65, 0, 0.35, 1]] }
+            : intro === "center"
             ? { duration: T_CENTER / 1000, ease: [0.2, 0.7, 0.3, 1] }
             : intro === "moving"
               ? { duration: T_MOVE / 1000, ease: [0.65, 0, 0.35, 1] }
               : { duration: T_SIBLINGS / 1000 }
         }
-        style={{ zIndex: intro === "done" ? 5 : 30, pointerEvents: expandedId || intro !== "done" ? "none" : "auto", visibility: offset ? "visible" : "hidden" }}
+        style={{ zIndex: intro === "done" ? 5 : 30, pointerEvents: hideSiblings || intro !== "done" ? "none" : "auto", visibility: offset ? "visible" : "hidden" }}
       >
         <FlipCard
           className="photoFlip"
@@ -525,64 +644,7 @@ export default function OscarPortafolio(): React.ReactElement {
                   ))}
                 </motion.div>
               ) : (
-                <motion.div key="expanded" className="panel workPanel" initial={{ opacity: 0 }} animate={{ opacity: s.showContent ? 1 : 0 }} exit={{ opacity: 0 }} transition={{ duration: T_CONTENT / 1000 }}>
-                  {activeProject && (
-                    <>
-                      <div className="workPanelHero" style={{ background: activeProject.color }}>
-                        <h2 className="workPanelTitle">{activeProject.title}</h2>
-                        <button type="button" className="iconBtn closeBtn" aria-label={t.closeLabel} onClick={closeCard}>✕</button>
-                      </div>
-                      <div className="workPanelBody">
-                        <p className="panelLine">{t.roleLabel}: {tr(activeProject.role)}</p>
-                        <p className="panelLine">{t.stackLabel}: {activeProject.stack}</p>
-                        <p className="panelBody">{tr(activeProject.summary)}</p>
-                        {activeProject.highlights && (
-                          <ul className="highlightList">
-                            {activeProject.highlights.map((h) => (
-                              <li key={h.en}>{tr(h)}</li>
-                            ))}
-                          </ul>
-                        )}
-                        {activeProject.clients && (
-                          <div className="clientList">
-                            {activeProject.clients.map((c) => (
-                              <div className="clientItem" key={c.name.en}>
-                                <span className="clientName">{tr(c.name)}</span>
-                                <span className="clientDesc">{tr(c.description)}</span>
-                                {c.highlights && (
-                                  <ul className="highlightList">
-                                    {c.highlights.map((h) => (
-                                      <li key={h.en}>{tr(h)}</li>
-                                    ))}
-                                  </ul>
-                                )}
-                                {c.url && (
-                                  <a className="clientLink" href={c.url} target="_blank" rel="noopener noreferrer">
-                                    {c.url.replace(/^https?:\/\//, "").replace(/\/$/, "")}
-                                  </a>
-                                )}
-                              </div>
-                            ))}
-                          </div>
-                        )}
-                        {activeProject.url && (
-                          <a className="liveLink" href={activeProject.url} target="_blank" rel="noopener noreferrer">
-                            {t.liveLink}
-                          </a>
-                        )}
-                        {activeProject.links && (
-                          <div className="linkRow">
-                            {activeProject.links.map((l) => (
-                              <a key={l.url} className="liveLink" href={l.url} target="_blank" rel="noopener noreferrer">
-                                {tr(l.label)}
-                              </a>
-                            ))}
-                          </div>
-                        )}
-                      </div>
-                    </>
-                  )}
-                </motion.div>
+                renderPanel("work", s.showContent)
               )}
             </AnimatePresence>
           </motion.section>
@@ -610,10 +672,7 @@ export default function OscarPortafolio(): React.ReactElement {
                   </p>
                 </motion.div>
               ) : (
-                <motion.div key="expanded" className="panel aboutPanel" initial={{ opacity: 0 }} animate={{ opacity: s.showContent ? 1 : 0 }} exit={{ opacity: 0 }} transition={{ duration: T_CONTENT / 1000 }}>
-                  <button type="button" className="iconBtn closeBtn" aria-label={t.closeLabel} onClick={(e) => { e.stopPropagation(); closeCard(); }}>✕</button>
-                  <AboutContent />
-                </motion.div>
+                renderPanel("about", s.showContent)
               )}
             </AnimatePresence>
           </motion.section>
@@ -643,10 +702,7 @@ export default function OscarPortafolio(): React.ReactElement {
                   <a className="cta" href="#" onClick={(e) => e.stopPropagation()}>{t.contactCta}</a>
                 </motion.div>
               ) : (
-                <motion.div key="expanded" className="panel aboutPanel" initial={{ opacity: 0 }} animate={{ opacity: s.showContent ? 1 : 0 }} exit={{ opacity: 0 }} transition={{ duration: T_CONTENT / 1000 }}>
-                  <button type="button" className="iconBtn closeBtn" aria-label={t.closeLabel} onClick={(e) => { e.stopPropagation(); closeCard(); }}>✕</button>
-                  <ContactContent />
-                </motion.div>
+                renderPanel("contact", s.showContent)
               )}
             </AnimatePresence>
           </motion.section>
@@ -657,9 +713,9 @@ export default function OscarPortafolio(): React.ReactElement {
         ref={socialGlow}
         className="card socialMedia bg-surface text-text magicCard"
         initial={{ opacity: 0, scale: 0.85 }}
-        animate={{ opacity: expandedId || !ready ? 0 : 1, scale: expandedId || !ready ? 0 : 1 }}
+        animate={{ opacity: hideSiblings || !ready ? 0 : 1, scale: hideSiblings || !ready ? 0 : 1 }}
         transition={{ duration: T_SIBLINGS / 1000, delay: CARD_ORDER.social * STAGGER }}
-        style={{ pointerEvents: expandedId ? "none" : "auto" }}
+        style={{ pointerEvents: hideSiblings ? "none" : "auto" }}
       >
         <span className="magicGlow" />
         <nav>
@@ -672,6 +728,23 @@ export default function OscarPortafolio(): React.ReactElement {
           ))}
         </nav>
       </motion.section>
+
+      {/* Mobile modal: a separate sheet so the grid underneath stays intact while it slides. */}
+      <AnimatePresence>
+        {stacked && expandedId && (
+          <motion.div
+            key={expandedId}
+            className={`card isFullscreen bg-surface text-text ${expandedId === "work" ? "myWork" : ""}`}
+            style={{ zIndex: 41 }}
+            initial={{ y: "100%" }}
+            animate={{ y: 0 }}
+            exit={{ y: "100%" }}
+            transition={{ duration: T_SHEET / 1000, ease: [0.2, 0.7, 0.3, 1] }}
+          >
+            {renderPanel(expandedId, true)}
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
     </LangContext.Provider>
   );
