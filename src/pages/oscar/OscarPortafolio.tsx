@@ -1,57 +1,94 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import AboutContent from "./AboutContent";
+import PersonalContent from "./PersonalContent";
+import ContactContent from "./ContactContent";
+import FlipCard from "../../components/react-bits/FlipCard";
+import { LangContext, type T } from "./i18n";
 import "./OscarPortafolio.css";
 
-type ClientProject = { name: string; description: string; highlights?: string[]; url?: string };
-type ProjectLink = { label: string; url: string };
+type ClientProject = { name: T; description: T; highlights?: T[]; url?: string };
+type ProjectLink = { label: T; url: string };
 
 type WorkItem = {
   id: number;
   title: string;
-  role: string;
+  role: T;
   stack: string;
   color: string;
-  summary: string;
+  summary: T;
   url?: string;
   clients?: ClientProject[];
-  highlights?: string[];
+  highlights?: T[];
   links?: ProjectLink[];
 };
+
+const same = (s: string): T => ({ es: s, en: s });
 
 const myWork: WorkItem[] = [
   {
     id: 1,
     title: "Opieka S.A.S.",
-    role: "Developer Consultant — Desarrollador Fullstack (nov. 2024 – jun. 2025)",
+    role: {
+      es: "Developer Consultant — Desarrollador Fullstack (nov. 2024 – jun. 2025)",
+      en: "Developer Consultant — Fullstack Developer (Nov 2024 – Jun 2025)",
+    },
     stack: "Angular · React · Express.js · PostgreSQL · Docker",
     color: "var(--color-teal)",
-    summary:
-      "Desarrollé aplicaciones web fullstack para clientes empresariales de Opieka en entorno de desarrollo. Fui el punto de contacto directo del cliente para Beneficiate, construí el sitio de CUIDAME PETS cuando el equipo dividió esa plataforma en dos, y resolví una caída crítica de backend en Seggu migrando su infraestructura de Railway a Google Cloud.",
+    summary: {
+      es: "Desarrollé aplicaciones web fullstack para clientes empresariales de Opieka en entorno de desarrollo. Fui el punto de contacto directo del cliente para Beneficiate, construí el sitio de CUIDAME PETS cuando el equipo dividió esa plataforma en dos, y resolví una caída crítica de backend en Seggu migrando su infraestructura de Railway a Google Cloud.",
+      en: "I built fullstack web applications for Opieka's enterprise clients in a development environment. I was the client's direct point of contact for Beneficiate, built the CUIDAME PETS site when the team split that platform in two, and fixed a critical backend outage at Seggu by migrating its infrastructure from Railway to Google Cloud.",
+    },
     clients: [
       {
-        name: "Beneficiate",
-        description: "Agendamiento de citas entre paciente y especialista, con gestión de beneficiarios y planes.",
+        name: same("Beneficiate"),
+        description: {
+          es: "Agendamiento de citas entre paciente y especialista, con gestión de beneficiarios y planes.",
+          en: "Appointment scheduling between patients and specialists, with beneficiary and plan management.",
+        },
         highlights: [
-          "Construí más de 10 vistas: registro, login, recuperación de contraseña, agendamiento y gestión de beneficiarios y planes.",
-          "Agregué un servicio de envío de correos en el backend para solicitudes de colaboración con la empresa.",
-          "Pasé a ser el punto de contacto directo del cliente, resolviendo incidencias de diseño y de flujo.",
-          "Propuse un filtro por especialidad médica para mejorar la búsqueda de doctores.",
+          {
+            es: "Construí más de 10 vistas: registro, login, recuperación de contraseña, agendamiento y gestión de beneficiarios y planes.",
+            en: "Built 10+ views: sign-up, login, password recovery, scheduling, and beneficiary and plan management.",
+          },
+          {
+            es: "Agregué un servicio de envío de correos en el backend para solicitudes de colaboración con la empresa.",
+            en: "Added a backend email service for collaboration requests to the company.",
+          },
+          {
+            es: "Pasé a ser el punto de contacto directo del cliente, resolviendo incidencias de diseño y de flujo.",
+            en: "Became the client's direct point of contact, resolving design and flow issues.",
+          },
+          {
+            es: "Propuse un filtro por especialidad médica para mejorar la búsqueda de doctores.",
+            en: "Proposed a medical-specialty filter to improve doctor search.",
+          },
         ],
         url: "https://beneficiate.co/",
       },
       {
-        name: "Cuídame Health / Cuídame Pets",
-        description: "Sitio informativo y tienda online, tras dividir CUIDAME en dos plataformas independientes.",
+        name: same("Cuídame Health / Cuídame Pets"),
+        description: {
+          es: "Sitio informativo y tienda online, tras dividir CUIDAME en dos plataformas independientes.",
+          en: "Informational site and online store, after splitting CUIDAME into two independent platforms.",
+        },
         highlights: [
-          "Cuando el equipo dividió CUIDAME en Health y Pets, construí el sitio de CUIDAME PETS: inicio, soluciones, tienda y oportunidades laborales.",
+          {
+            es: "Cuando el equipo dividió CUIDAME en Health y Pets, construí el sitio de CUIDAME PETS: inicio, soluciones, tienda y oportunidades laborales.",
+            en: "When the team split CUIDAME into Health and Pets, I built the CUIDAME PETS site: home, solutions, store and job opportunities.",
+          },
         ],
         url: "https://doc.cuidame.tech/",
       },
       {
-        name: "Seggu",
-        description: "Consultoría de seguros catastrales.",
-        highlights: ["Resolví una caída crítica del backend migrando base de datos y servidor de Railway a Google Cloud."],
+        name: same("Seggu"),
+        description: { es: "Consultoría de seguros catastrales.", en: "Cadastral insurance consulting." },
+        highlights: [
+          {
+            es: "Resolví una caída crítica del backend migrando base de datos y servidor de Railway a Google Cloud.",
+            en: "Fixed a critical backend outage by migrating the database and server from Railway to Google Cloud.",
+          },
+        ],
         url: "https://holaseggu.com/",
       },
     ],
@@ -59,36 +96,67 @@ const myWork: WorkItem[] = [
   {
     id: 2,
     title: "Quyca",
-    role: "DevOps y Desarrollador Fullstack (en solitario) — Proyecto de grado, activo como proyecto personal",
+    role: {
+      es: "DevOps y Desarrollador Fullstack (en solitario) — Proyecto de grado, activo como proyecto personal",
+      en: "DevOps and Fullstack Developer (solo) — Thesis project, still active as a personal project",
+    },
     stack: "React · TypeScript · NestJS · Prisma · PostgreSQL · Redis · Docker · Azure · GitHub Actions",
     color: "var(--color-rust)",
-    summary:
-      "SaaS multi-tenant para instituciones educativas colombianas, nacido como galería de arte para el grupo de arte de la Universidad Santo Tomás. Gestión de grupos, calendario de eventos, editor de lecciones con capítulos y portafolios públicos de artistas.",
+    summary: {
+      es: "SaaS multi-tenant para instituciones educativas colombianas, nacido como galería de arte para el grupo de arte de la Universidad Santo Tomás. Gestión de grupos, calendario de eventos, editor de lecciones con capítulos y portafolios públicos de artistas.",
+      en: "Multi-tenant SaaS for Colombian educational institutions, born as an art gallery for the Universidad Santo Tomás art group. Group management, event calendar, lesson editor with chapters and public artist portfolios.",
+    },
     highlights: [
-      "Arquitectura multi-tenant: aislamiento de datos por institución inyectado automáticamente en cada consulta vía una extensión de Prisma, con fallo cerrado (403) si no hay tenant resuelto.",
-      "Sistema de roles (RBAC) con 6 roles de contexto — menú y guards derivados del mismo predicado para que no se desincronicen.",
-      "Editor de lecciones y capítulos con reordenamiento drag-and-drop, calendario de eventos y portafolios públicos de artistas.",
-      "CI/CD con GitHub Actions y despliegue en Azure; backend documentado con Swagger y probado con Postman/Newman.",
+      {
+        es: "Arquitectura multi-tenant: aislamiento de datos por institución inyectado automáticamente en cada consulta vía una extensión de Prisma, con fallo cerrado (403) si no hay tenant resuelto.",
+        en: "Multi-tenant architecture: per-institution data isolation injected automatically into every query through a Prisma extension, failing closed (403) when no tenant is resolved.",
+      },
+      {
+        es: "Sistema de roles (RBAC) con 6 roles de contexto — menú y guards derivados del mismo predicado para que no se desincronicen.",
+        en: "Role system (RBAC) with 6 context roles — menu and guards derived from the same predicate so they never drift apart.",
+      },
+      {
+        es: "Editor de lecciones y capítulos con reordenamiento drag-and-drop, calendario de eventos y portafolios públicos de artistas.",
+        en: "Lesson and chapter editor with drag-and-drop reordering, event calendar and public artist portfolios.",
+      },
+      {
+        es: "CI/CD con GitHub Actions y despliegue en Azure; backend documentado con Swagger y probado con Postman/Newman.",
+        en: "CI/CD with GitHub Actions and Azure deployment; backend documented with Swagger and tested with Postman/Newman.",
+      },
     ],
     links: [
-      { label: "Repositorio cliente", url: "https://github.com/OscarCardozoDev/QuycaClient" },
-      { label: "Repositorio servidor", url: "https://github.com/OscarCardozoDev/QuycaServer" },
+      { label: { es: "Repositorio cliente", en: "Client repository" }, url: "https://github.com/OscarCardozoDev/QuycaClient" },
+      { label: { es: "Repositorio servidor", en: "Server repository" }, url: "https://github.com/OscarCardozoDev/QuycaServer" },
     ],
   },
   {
     id: 3,
     title: "arpIA — CodeFest Ad Astra",
-    role: "Backend y RAG — Hackathon en equipo (USTACODE)",
-    stack: "Python · FastAPI · FAISS · BGE-M3 · LiteLLM/Bedrock · Docker",
+    role: {
+      es: "Frontend, integración con el backend y despliegue — Hackathon en equipo (USTACODE)",
+      en: "Frontend, backend integration and deployment — Team hackathon (USTACODE)",
+    },
+    stack: "Frontend · Backend integration · Deploy",
     color: "var(--color-mustard)",
-    summary:
-      "Asistente conversacional multiagente para consultar un corpus sobre IA en entornos militares, seguridad espacial/LEO y dinámicas territoriales en América Latina, construido en equipo para el hackathon CodeFest Ad Astra.",
+    summary: {
+      es: "Asistente conversacional multiagente para consultar un corpus sobre IA en entornos militares, seguridad espacial/LEO y dinámicas territoriales en América Latina, construido en equipo para el hackathon CodeFest Ad Astra.",
+      en: "Multi-agent conversational assistant to query a corpus on AI in military settings, space/LEO security and territorial dynamics in Latin America, built as a team for the CodeFest Ad Astra hackathon.",
+    },
     highlights: [
-      "Trabajé en el backend y el pipeline RAG: orquestador, especialista RAG y guardián de seguridad sobre un cliente LLM compartido (gpt-oss-20b vía LiteLLM/Bedrock).",
-      "Búsqueda vectorial sobre 205.515 fragmentos con FAISS (IndexFlatIP) y embeddings BGE-M3.",
-      "Contrato de respuesta con evidencia citada, metadata de tokens/latencia y reintentos controlados ante fallos del LLM.",
+      {
+        es: "Ayudé con el frontend del asistente: la interfaz de chat donde se hacen las consultas y se leen las respuestas.",
+        en: "Helped build the assistant's frontend: the chat interface where questions are asked and answers are read.",
+      },
+      {
+        es: "Conecté el frontend con el backend del equipo.",
+        en: "Connected the frontend to the team's backend.",
+      },
+      {
+        es: "Desplegué el proyecto para que funcionara en vivo durante el pitch de la final.",
+        en: "Deployed the project so it ran live during the final's pitch.",
+      },
     ],
-    links: [{ label: "Ver repositorio", url: "https://github.com/Wissen01720/codefest-ad-astra" }],
+    links: [{ label: { es: "Ver repositorio", en: "View repository" }, url: "https://github.com/Wissen01720/codefest-ad-astra" }],
   },
 ];
 
@@ -109,9 +177,12 @@ const dict = {
     headerRoleLabel: "Rol actual",
     headerRole: "Ingeniero de sistemas · Desarrollador Fullstack",
     headerPitch: "Construyo aplicaciones web de punta a punta, desde la infraestructura y el backend hasta el último detalle visual.",
-    imageCaption: "Desde Tunja, Boyacá, Colombia.",
     skillsLabel: "Herramientas que uso",
     phoneLabel: "Teléfono",
+    available: "DISPONIBLE PARA NUEVOS PROYECTOS",
+    roleShort: "Ingeniero de Sistemas",
+    darkLabel: "Modo oscuro",
+    lightLabel: "Modo claro",
   },
   en: {
     tagline: "Always chasing new challenges that push me to grow as an engineer and as a person.",
@@ -129,12 +200,29 @@ const dict = {
     headerRoleLabel: "Current role",
     headerRole: "Systems Engineer · Fullstack Developer",
     headerPitch: "I build web applications end to end, from infrastructure and backend down to the last visual detail.",
-    imageCaption: "From Tunja, Boyacá, Colombia.",
     skillsLabel: "Tools I use",
     phoneLabel: "Phone",
+    available: "AVAILABLE FOR NEW PROJECTS",
+    roleShort: "Systems Engineer",
+    darkLabel: "Dark mode",
+    lightLabel: "Light mode",
   },
 };
 
+const icon = (d: string) => (
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <path d={d} />
+  </svg>
+);
+const socials = [
+  { label: "LinkedIn", href: "https://www.linkedin.com/in/oscar-javier-cardozo-diaz-baa952205/", icon: icon("M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6zM2 9h4v12H2zM4 2a2 2 0 1 1 0 4 2 2 0 0 1 0-4z") },
+  { label: "GitHub", href: "https://github.com/OscarCardozoDev", icon: icon("M9 19c-5 1.5-5-2.5-7-3m14 6v-3.9a3.4 3.4 0 0 0-.9-2.6c3-.3 6.2-1.5 6.2-6.7a5.2 5.2 0 0 0-1.4-3.6 4.8 4.8 0 0 0-.1-3.6s-1.1-.3-3.7 1.4a12.8 12.8 0 0 0-6.6 0C6.9 2.6 5.8 3 5.8 3a4.8 4.8 0 0 0-.1 3.6A5.2 5.2 0 0 0 4.3 10.2c0 5.2 3.2 6.4 6.2 6.7a3.4 3.4 0 0 0-.9 2.6V22") },
+  { label: "CV", href: "/Hoja_de_vida_Oscar_Cardozo_ATS_2026.pdf", icon: icon("M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8zM14 2v6h6M8 13h8M8 17h5") },
+];
+
+const T_CENTER = 450;
+const T_HOLD = 120;
+const T_MOVE = 650;
 const T_SIBLINGS = 550;
 const T_GROW = 750;
 const T_CONTENT = 450;
@@ -145,8 +233,8 @@ const CARD_ORDER: Record<CardId, number> = { header: 0, phrase: 1, image: 2, wor
 const STAGGER = 0.08; // seconds between each card's turn
 const SIBLINGS_TOTAL = T_SIBLINGS + 6 * STAGGER * 1000;
 
-type ExpandableId = "phrase" | "image" | "work" | "about" | "contact";
-type CardId = ExpandableId | "header" | "social";
+type ExpandableId = "phrase" | "work" | "about" | "contact";
+type CardId = ExpandableId | "header" | "image" | "social";
 type Stage = "closing" | "growing" | "content-in" | "open" | "content-out" | "shrinking" | null;
 
 // Callback ref (not useRef+useEffect) so the listener re-attaches correctly
@@ -166,7 +254,7 @@ function useMagicGlow<T extends HTMLElement>() {
   }, []);
 }
 
-function CircularBadge() {
+function CircularBadge({ text }: { text: string }) {
   return (
     <div className="circularBadge">
       <svg viewBox="0 0 110 110">
@@ -175,7 +263,7 @@ function CircularBadge() {
         </defs>
         <text fontFamily="Outfit, sans-serif" fontSize="8.3" letterSpacing="2" style={{ fill: "var(--color-text-muted)" }}>
           <textPath href="#circlePath1" startOffset="0%">
-            DISPONIBLE PARA NUEVOS PROYECTOS • DISPONIBLE PARA NUEVOS PROYECTOS •{" "}
+            {text} • {text} •{" "}
           </textPath>
         </text>
       </svg>
@@ -191,9 +279,36 @@ export default function OscarPortafolio(): React.ReactElement {
   const [activeProjectId, setActiveProjectId] = useState<number | null>(null);
   const [hoverProjectId, setHoverProjectId] = useState(1);
   const [stage, setStage] = useState<Stage>(null);
+  const reduced = typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const [intro, setIntro] = useState<"center" | "moving" | "done">(reduced ? "done" : "center");
+  const [offset, setOffset] = useState<{ x: number; y: number } | null>(reduced ? { x: 0, y: 0 } : null);
+  const [ready, setReady] = useState(reduced);
+  const photoRef = useRef<HTMLElement>(null);
   const timers = useRef<number[]>([]);
 
+  useLayoutEffect(() => {
+    const el = photoRef.current;
+    if (!el || reduced) return;
+    setOffset({
+      x: window.innerWidth / 2 - (el.offsetLeft + el.offsetWidth / 2),
+      y: window.innerHeight / 2 - (el.offsetTop + el.offsetHeight / 2),
+    });
+  }, [reduced]);
+
+  useEffect(() => {
+    if (reduced || !offset) return;
+    const a = window.setTimeout(() => setIntro("moving"), T_CENTER + T_HOLD);
+    const r = window.setTimeout(() => setReady(true), T_CENTER + T_HOLD + T_MOVE * 0.7);
+    const b = window.setTimeout(() => setIntro("done"), T_CENTER + T_HOLD + T_MOVE);
+    return () => {
+      window.clearTimeout(a);
+      window.clearTimeout(r);
+      window.clearTimeout(b);
+    };
+  }, [reduced, offset]);
+
   const t = dict[lang];
+  const tr = (x: T) => x[lang];
 
   const clearTimers = () => {
     timers.current.forEach((id) => window.clearTimeout(id));
@@ -247,7 +362,6 @@ export default function OscarPortafolio(): React.ReactElement {
 
   const headerGlow = useMagicGlow<HTMLElement>();
   const phraseGlow = useMagicGlow<HTMLElement>();
-  const imageGlow = useMagicGlow<HTMLElement>();
   const aboutGlow = useMagicGlow<HTMLElement>();
   const contactGlow = useMagicGlow<HTMLElement>();
   const socialGlow = useMagicGlow<HTMLElement>();
@@ -255,6 +369,7 @@ export default function OscarPortafolio(): React.ReactElement {
   const activeProject = myWork.find((p) => p.id === activeProjectId) ?? null;
 
   return (
+    <LangContext.Provider value={lang}>
     <div className="parent bg-bg" data-theme={dark ? "dark" : undefined}>
       {expandedId && <div className="scrim" onClick={closeCard} />}
 
@@ -262,7 +377,7 @@ export default function OscarPortafolio(): React.ReactElement {
         ref={headerGlow}
         className="card headerOscar bg-surface text-text magicCard"
         initial={{ opacity: 0, scale: 0.85 }}
-        animate={{ opacity: expandedId ? 0 : 1, scale: expandedId ? 0 : 1 }}
+        animate={{ opacity: expandedId || !ready ? 0 : 1, scale: expandedId || !ready ? 0 : 1 }}
         transition={{ duration: T_SIBLINGS / 1000, delay: CARD_ORDER.header * STAGGER }}
         style={{ pointerEvents: expandedId ? "none" : "auto" }}
       >
@@ -275,7 +390,7 @@ export default function OscarPortafolio(): React.ReactElement {
           <button
             type="button"
             className="iconBtn"
-            aria-label={dark ? "Modo claro" : "Modo oscuro"}
+            aria-label={dark ? t.lightLabel : t.darkLabel}
             onClick={() => setDark((d) => !d)}
           >
             {dark ? (
@@ -294,7 +409,7 @@ export default function OscarPortafolio(): React.ReactElement {
             layout
             initial={{ opacity: 0, scale: 0.85 }}
             transition={cardTransition("phrase")}
-            animate={{ opacity: s.isHidden ? 0 : 1, scale: s.isHidden ? 0 : 1 }}
+            animate={{ opacity: s.isHidden || !ready ? 0 : 1, scale: s.isHidden || !ready ? 0 : 1 }}
             className={`card phraseContainer bg-surface text-text magicCard ${s.wantFull ? "isFullscreen" : ""}`}
             style={{ zIndex: s.isExpanding ? 41 : 5 }}
             onClick={() => !expandedId && openCard("phrase")}
@@ -303,14 +418,13 @@ export default function OscarPortafolio(): React.ReactElement {
               {!s.wantFull ? (
                 <motion.div key="collapsed" className="cardInner" exit={{ opacity: 0 }} ref={phraseGlow}>
                   <span className="magicGlow" />
-                  <CircularBadge />
+                  <CircularBadge text={t.available} />
                   <p className="tagline">{t.tagline}</p>
                 </motion.div>
               ) : (
-                <motion.div key="expanded" className="panel" initial={{ opacity: 0 }} animate={{ opacity: s.showContent ? 1 : 0 }} exit={{ opacity: 0 }} transition={{ duration: T_CONTENT / 1000 }}>
+                <motion.div key="expanded" className="panel aboutPanel" initial={{ opacity: 0 }} animate={{ opacity: s.showContent ? 1 : 0 }} exit={{ opacity: 0 }} transition={{ duration: T_CONTENT / 1000 }}>
                   <button type="button" className="iconBtn closeBtn" aria-label={t.closeLabel} onClick={(e) => { e.stopPropagation(); closeCard(); }}>✕</button>
-                  <h2 className="panelHeading">{t.tagline}</h2>
-                  <p className="panelBody">{t.philosophy}</p>
+                  <PersonalContent tagline={t.tagline} philosophy={t.philosophy} />
                 </motion.div>
               )}
             </AnimatePresence>
@@ -318,35 +432,49 @@ export default function OscarPortafolio(): React.ReactElement {
         );
       })()}
 
-      {(() => {
-        const s = cardState("image");
-        return (
-          <motion.section
-            layout
-            initial={{ opacity: 0, scale: 0.85 }}
-            transition={cardTransition("image")}
-            animate={{ opacity: s.isHidden ? 0 : 1, scale: s.isHidden ? 0 : 1 }}
-            className={`card imageContainer bg-surface magicCard ${s.wantFull ? "isFullscreen" : ""}`}
-            style={{ zIndex: s.isExpanding ? 41 : 5 }}
-            onClick={() => !expandedId && openCard("image")}
-          >
-            <AnimatePresence mode="wait">
-              {!s.wantFull ? (
-                <motion.div key="collapsed" className="cardInner" exit={{ opacity: 0 }} ref={imageGlow}>
-                  <img className="photo" src="/photo.jpg" alt="Oscar Cardozo" />
-                  <span className="magicGlow" />
-                </motion.div>
-              ) : (
-                <motion.div key="expanded" className="panel" initial={{ opacity: 0 }} animate={{ opacity: s.showContent ? 1 : 0 }} exit={{ opacity: 0 }} transition={{ duration: T_CONTENT / 1000 }}>
-                  <img className="photo" src="/bg.jpg" alt="Oscar Cardozo" />
-                  <button type="button" className="iconBtn closeBtn" aria-label={t.closeLabel} onClick={(e) => { e.stopPropagation(); closeCard(); }}>✕</button>
-                  <p className="imageCaption">{t.imageCaption}</p>
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </motion.section>
-        );
-      })()}
+      <motion.section
+        key={offset ? "measured" : "unmeasured"}
+        ref={photoRef}
+        className="card imageContainer bg-surface"
+        initial={
+          reduced
+            ? { opacity: 0, scale: 0.85 }
+            : { opacity: 0, scale: 0.6, x: offset?.x ?? 0, y: offset?.y ?? 0 }
+        }
+        animate={
+          intro === "center" && !reduced
+            ? { opacity: 1, scale: 1.15, x: offset?.x ?? 0, y: offset?.y ?? 0 }
+            : { opacity: expandedId ? 0 : 1, scale: expandedId ? 0 : 1, x: 0, y: 0 }
+        }
+        transition={
+          intro === "center"
+            ? { duration: T_CENTER / 1000, ease: [0.2, 0.7, 0.3, 1] }
+            : intro === "moving"
+              ? { duration: T_MOVE / 1000, ease: [0.65, 0, 0.35, 1] }
+              : { duration: T_SIBLINGS / 1000 }
+        }
+        style={{ zIndex: intro === "done" ? 5 : 30, pointerEvents: expandedId || intro !== "done" ? "none" : "auto", visibility: offset ? "visible" : "hidden" }}
+      >
+        <FlipCard
+          className="photoFlip"
+          radius={16}
+          background="var(--color-bg)"
+          shadow={false}
+          ariaLabel="Oscar Cardozo"
+          front={<img className="photo" src="/photo.jpg" alt="Oscar Cardozo" draggable={false} />}
+          back={
+            <div className="photoBack">
+              <img className="photo gray" src="/photo.jpg" alt="" draggable={false} />
+              <div className="photoInfo">
+                <strong>Oscar Cardozo</strong>
+                <span>{t.roleShort}</span>
+                <span>+57 3195752651</span>
+                <span>oscar.cardozo30@hotmail.com</span>
+              </div>
+            </div>
+          }
+        />
+      </motion.section>
 
       {(() => {
         const s = cardState("work");
@@ -355,7 +483,7 @@ export default function OscarPortafolio(): React.ReactElement {
             layout
             initial={{ opacity: 0, scale: 0.85 }}
             transition={cardTransition("work")}
-            animate={{ opacity: s.isHidden ? 0 : 1, scale: s.isHidden ? 0 : 1 }}
+            animate={{ opacity: s.isHidden || !ready ? 0 : 1, scale: s.isHidden || !ready ? 0 : 1 }}
             className={`card myWork bg-surface text-text ${s.wantFull ? "isFullscreen" : ""}`}
             style={{ zIndex: s.isExpanding ? 41 : 5 }}
           >
@@ -388,26 +516,26 @@ export default function OscarPortafolio(): React.ReactElement {
                         <button type="button" className="iconBtn closeBtn" aria-label={t.closeLabel} onClick={closeCard}>✕</button>
                       </div>
                       <div className="workPanelBody">
-                        <p className="panelLine">{t.roleLabel}: {activeProject.role}</p>
+                        <p className="panelLine">{t.roleLabel}: {tr(activeProject.role)}</p>
                         <p className="panelLine">{t.stackLabel}: {activeProject.stack}</p>
-                        <p className="panelBody">{activeProject.summary}</p>
+                        <p className="panelBody">{tr(activeProject.summary)}</p>
                         {activeProject.highlights && (
                           <ul className="highlightList">
                             {activeProject.highlights.map((h) => (
-                              <li key={h}>{h}</li>
+                              <li key={h.en}>{tr(h)}</li>
                             ))}
                           </ul>
                         )}
                         {activeProject.clients && (
                           <div className="clientList">
                             {activeProject.clients.map((c) => (
-                              <div className="clientItem" key={c.name}>
-                                <span className="clientName">{c.name}</span>
-                                <span className="clientDesc">{c.description}</span>
+                              <div className="clientItem" key={c.name.en}>
+                                <span className="clientName">{tr(c.name)}</span>
+                                <span className="clientDesc">{tr(c.description)}</span>
                                 {c.highlights && (
                                   <ul className="highlightList">
                                     {c.highlights.map((h) => (
-                                      <li key={h}>{h}</li>
+                                      <li key={h.en}>{tr(h)}</li>
                                     ))}
                                   </ul>
                                 )}
@@ -429,7 +557,7 @@ export default function OscarPortafolio(): React.ReactElement {
                           <div className="linkRow">
                             {activeProject.links.map((l) => (
                               <a key={l.url} className="liveLink" href={l.url} target="_blank" rel="noopener noreferrer">
-                                {l.label}
+                                {tr(l.label)}
                               </a>
                             ))}
                           </div>
@@ -451,7 +579,7 @@ export default function OscarPortafolio(): React.ReactElement {
             layout
             initial={{ opacity: 0, scale: 0.85 }}
             transition={cardTransition("about")}
-            animate={{ opacity: s.isHidden ? 0 : 1, scale: s.isHidden ? 0 : 1 }}
+            animate={{ opacity: s.isHidden || !ready ? 0 : 1, scale: s.isHidden || !ready ? 0 : 1 }}
             className={`card aboutMe bg-surface text-text magicCard ${s.wantFull ? "isFullscreen" : ""}`}
             style={{ zIndex: s.isExpanding ? 41 : 5 }}
             onClick={() => !expandedId && openCard("about")}
@@ -482,7 +610,7 @@ export default function OscarPortafolio(): React.ReactElement {
             layout
             initial={{ opacity: 0, scale: 0.85 }}
             transition={cardTransition("contact")}
-            animate={{ opacity: s.isHidden ? 0 : 1, scale: s.isHidden ? 0 : 1 }}
+            animate={{ opacity: s.isHidden || !ready ? 0 : 1, scale: s.isHidden || !ready ? 0 : 1 }}
             className={`card contactMe bg-surface text-text magicCard ${s.wantFull ? "isFullscreen" : ""}`}
             style={{ zIndex: s.isExpanding ? 41 : 5 }}
             onClick={() => !expandedId && openCard("contact")}
@@ -498,12 +626,9 @@ export default function OscarPortafolio(): React.ReactElement {
                   <a className="cta" href="#" onClick={(e) => e.stopPropagation()}>{t.contactCta}</a>
                 </motion.div>
               ) : (
-                <motion.div key="expanded" className="panel" initial={{ opacity: 0 }} animate={{ opacity: s.showContent ? 1 : 0 }} exit={{ opacity: 0 }} transition={{ duration: T_CONTENT / 1000 }}>
+                <motion.div key="expanded" className="panel aboutPanel" initial={{ opacity: 0 }} animate={{ opacity: s.showContent ? 1 : 0 }} exit={{ opacity: 0 }} transition={{ duration: T_CONTENT / 1000 }}>
                   <button type="button" className="iconBtn closeBtn" aria-label={t.closeLabel} onClick={(e) => { e.stopPropagation(); closeCard(); }}>✕</button>
-                  <h2 className="panelHeading">{t.contactCta}</h2>
-                  <p className="panelLine">Email: oscar@example.com</p>
-                  <p className="panelLine">{t.phoneLabel}: +57 300 000 0000</p>
-                  <p className="panelBody">{t.contactExtra}</p>
+                  <ContactContent />
                 </motion.div>
               )}
             </AnimatePresence>
@@ -515,17 +640,22 @@ export default function OscarPortafolio(): React.ReactElement {
         ref={socialGlow}
         className="card socialMedia bg-surface text-text magicCard"
         initial={{ opacity: 0, scale: 0.85 }}
-        animate={{ opacity: expandedId ? 0 : 1, scale: expandedId ? 0 : 1 }}
+        animate={{ opacity: expandedId || !ready ? 0 : 1, scale: expandedId || !ready ? 0 : 1 }}
         transition={{ duration: T_SIBLINGS / 1000, delay: CARD_ORDER.social * STAGGER }}
         style={{ pointerEvents: expandedId ? "none" : "auto" }}
       >
         <span className="magicGlow" />
         <nav>
-          <a className="socialLink" href="https://www.linkedin.com/in/oscar-javier-cardozo-diaz-baa952205/">Linkedin</a>
-          <a className="socialLink" href="https://github.com/OscarCardozoDev">GitHub</a>
-          <a className="socialLink" href="https://www.instagram.com/tipodelmonton/?hl=es-la">Instagram</a>
+          {socials.map((l) => (
+            <a key={l.label} className="socialLink" href={l.href} target="_blank" rel="noopener noreferrer" aria-label={l.label}>
+              <span className="socialIcon">{l.icon}</span>
+              <span className="socialLabel">{l.label}</span>
+              <svg className="socialArrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" aria-hidden="true"><path d="M7 17 17 7M17 7H8M17 7v9" /></svg>
+            </a>
+          ))}
         </nav>
       </motion.section>
     </div>
+    </LangContext.Provider>
   );
 }

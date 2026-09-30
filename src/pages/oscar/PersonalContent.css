@@ -1,0 +1,249 @@
+/* Stripes that run edge to edge inside the modal panel, alternating light and dark. */
+.aboutPanel:has(.personal) {
+  padding-bottom: 0;
+}
+.personal {
+  --ink: var(--color-text);
+  --band-bg: var(--color-bg);
+  --band-fg: #f1e2ba;
+}
+.personal .band {
+  margin-inline: -48px;
+  padding: 64px 48px;
+}
+.personal .band.dark {
+  background: var(--band-bg);
+  color: var(--band-fg);
+}
+.personal .band.dark h3,
+.personal .band.dark .persText {
+  color: var(--band-fg);
+}
+.personal .band.dark .persPlace,
+.personal .band.dark .caption {
+  color: color-mix(in srgb, var(--band-fg) 68%, transparent);
+}
+.personal .band.dark .thumb {
+  background: #000;
+}
+.personal .band h3 {
+  font-size: 32px;
+  line-height: 1.25;
+  margin-bottom: 16px;
+}
+
+/* Hero: text on the left, one painting standing on a ground line, like the reference. */
+.personal .hero {
+  margin-top: -44px;
+  padding: 72px 48px 0;
+  display: grid;
+  grid-template-columns: minmax(0, 7fr) minmax(0, 4fr);
+  gap: 48px;
+  align-items: end;
+  border-bottom: 3px solid var(--ink);
+}
+.heroText {
+  padding-bottom: 56px;
+}
+.personal .hero h2 {
+  font-size: 72px;
+  line-height: 1.05;
+  margin-bottom: 22px;
+}
+.personal .lede {
+  font-size: 22px;
+  line-height: 1.5;
+  max-width: 34ch;
+  color: var(--ink);
+}
+.persNote {
+  margin-top: 14px;
+  max-width: 58ch;
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--color-text-muted);
+}
+.lede + .persNote {
+  margin-top: 28px;
+}
+.heroArt {
+  margin: 0 0 -3px;
+  justify-self: end;
+  width: min(100%, 340px);
+}
+.heroArt img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+  object-view-box: inset(5% 2% 21% 3%);
+  border: 3px solid var(--ink);
+  border-bottom: 0;
+  border-radius: 6px 6px 0 0;
+  box-shadow: 10px 0 0 var(--color-accent);
+}
+.heroArt figcaption {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+}
+
+.personal .split {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  gap: 56px;
+  align-items: center;
+}
+.personal .split.flip {
+  grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+}
+.persPlace {
+  margin: -6px 0 18px;
+  font-size: 14px;
+  color: var(--color-text-muted);
+}
+.personal .persText {
+  max-width: 52ch;
+  font-size: 17px;
+  line-height: 1.65;
+}
+.persText + .persText {
+  margin-top: 12px;
+}
+
+/* Framed like a print: thick border and a hard offset shadow, tilted a hair. */
+.personal .stage {
+  border: 3px solid var(--band-fg);
+  border-radius: 6px;
+  box-shadow: 10px 10px 0 var(--color-accent);
+}
+.personal .band:not(.dark) .stage {
+  border-color: var(--ink);
+}
+
+/* Square tiles with a hard border; the filled one marks a favourite. */
+.tiles {
+  list-style: none;
+  margin: 24px 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 14px;
+}
+.split > .tiles {
+  margin: 0;
+}
+.tile {
+  min-height: 150px;
+  padding: 18px 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 12px;
+  border: 2px solid var(--ink);
+  border-radius: 4px;
+  background: var(--color-surface);
+  color: var(--ink);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.tile:hover {
+  transform: translate(-3px, -3px);
+  box-shadow: 6px 6px 0 var(--ink);
+}
+.tile strong {
+  font: 600 19px/1.25 var(--font-body);
+}
+.split > .tiles {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+.split > .tiles .tile {
+  min-height: 190px;
+}
+.split > .tiles .tile strong {
+  font: 400 34px/1.1 var(--font-display);
+}
+.personal .caption {
+  margin-top: 18px;
+}
+.tile span {
+  font-size: 13px;
+  color: var(--color-text-muted);
+}
+.tile.on {
+  background: var(--band-bg);
+  border-color: var(--band-bg);
+  color: var(--band-fg);
+}
+.tile.on span {
+  color: color-mix(in srgb, var(--band-fg) 72%, transparent);
+}
+.tile.on:hover {
+  box-shadow: 6px 6px 0 var(--color-accent);
+}
+
+.personal .pair {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  padding-inline: 0;
+}
+.personal .pair > div {
+  padding: 0 48px;
+}
+.personal .pair > div + div {
+  border-left: 2px solid var(--ink);
+}
+
+@media (max-width: 820px) {
+  .personal .band {
+    margin-inline: -20px;
+    padding: 44px 20px;
+  }
+  .personal .hero {
+    margin-top: -56px;
+    padding-top: 72px;
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+  .personal .hero h2 {
+    font-size: 44px;
+  }
+  .heroText {
+    padding-bottom: 0;
+  }
+  .heroArt {
+    justify-self: center;
+  }
+  .personal .split,
+  .personal .split.flip,
+  .personal .pair {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+  .personal .pair > div {
+    padding: 0;
+  }
+  .personal .pair > div + div {
+    border-left: 0;
+    padding-top: 32px;
+    border-top: 2px solid var(--ink);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tile,
+  .tile:hover {
+    transition: none;
+    transform: none;
+  }
+}
+
+.morphFrame {
+  height: 480px;
+  border: 3px solid var(--band-fg);
+  border-radius: 6px;
+  overflow: hidden;
+  box-shadow: 10px 10px 0 var(--color-accent);
+}
+@media (max-width: 820px) { .morphFrame { height: 340px; } }
