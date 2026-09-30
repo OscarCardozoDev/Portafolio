@@ -262,8 +262,9 @@ function CircularBadge({ text }: { text: string }) {
           <path id="circlePath1" d="M 55,55 m -45,0 a 45,45 0 1,1 90,0 a 45,45 0 1,1 -90,0" fill="none" />
         </defs>
         <text fontFamily="Outfit, sans-serif" fontSize="8.3" letterSpacing="2" style={{ fill: "var(--color-text-muted)" }}>
-          <textPath href="#circlePath1" startOffset="0%">
-            {text} • {text} •{" "}
+          {/* One lap, stretched to the path's circumference (2π·45 ≈ 282) so ES/EN both close the circle */}
+          <textPath href="#circlePath1" startOffset="0%" textLength="280" lengthAdjust="spacingAndGlyphs">
+            {text} •
           </textPath>
         </text>
       </svg>
@@ -279,7 +280,8 @@ export default function OscarPortafolio(): React.ReactElement {
   const [activeProjectId, setActiveProjectId] = useState<number | null>(null);
   const [hoverProjectId, setHoverProjectId] = useState(1);
   const [stage, setStage] = useState<Stage>(null);
-  const reduced = typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  // Stacked layout (≤900px) puts the photo below the fold, so the fly-in from center is skipped like reduced motion.
+  const reduced = typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce), (max-width: 900px)").matches;
   const [intro, setIntro] = useState<"center" | "moving" | "done">(reduced ? "done" : "center");
   const [offset, setOffset] = useState<{ x: number; y: number } | null>(reduced ? { x: 0, y: 0 } : null);
   const [ready, setReady] = useState(reduced);
@@ -316,9 +318,22 @@ export default function OscarPortafolio(): React.ReactElement {
   };
   useEffect(() => clearTimers, []);
 
+  // Fullscreen modal owns the viewport: freeze the page behind it so only the modal's scrollbar shows.
+  const savedScroll = useRef(0);
+  useEffect(() => {
+    if (!expandedId) return;
+    document.documentElement.style.overflow = "hidden";
+    return () => { document.documentElement.style.overflow = ""; };
+  }, [expandedId]);
+  // The fixed card leaves the flow and the page shrinks, clamping scroll; put it back before it shrinks home.
+  useLayoutEffect(() => {
+    if (stage === "shrinking" || stage === null) window.scrollTo(0, savedScroll.current);
+  }, [stage]);
+
   function openCard(id: ExpandableId) {
     if (expandedId) return;
     clearTimers();
+    savedScroll.current = window.scrollY;
     setExpandedId(id);
     setStage("closing");
     timers.current.push(
@@ -497,7 +512,9 @@ export default function OscarPortafolio(): React.ReactElement {
                       className={`accordionRow ${p.id === hoverProjectId ? "open" : ""}`}
                       style={{ background: p.color }}
                       onMouseEnter={() => setHoverProjectId(p.id)}
-                      onClick={() => openProject(p.id)}
+                      onFocus={() => setHoverProjectId(p.id)}
+                      // Touch has no hover: first tap unfolds the row, second opens it.
+                      onClick={() => (p.id === hoverProjectId ? openProject(p.id) : setHoverProjectId(p.id))}
                     >
                       <span className="sheen" />
                       <span className="expandBtn" aria-hidden="true">

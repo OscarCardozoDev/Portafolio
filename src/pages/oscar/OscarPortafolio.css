@@ -1,7 +1,9 @@
 .parent {
   position: relative;
   height: 100vh;
-  width: 100vw;
+  height: 100dvh;
+  min-height: 680px; /* short screens scroll instead of crushing the 1fr rows */
+  width: 100%;
   box-sizing: border-box;
   padding: 24px;
   display: grid;
@@ -41,7 +43,8 @@
 
 .card.isFullscreen {
   position: fixed;
-  inset: 24px;
+  inset: 0;
+  border-radius: 0;
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
 }
 
@@ -104,7 +107,7 @@
 .headerName {
   margin: 0;
   font-family: var(--font-display);
-  font-size: 31px;
+  font-size: clamp(20px, 2.3vw, 31px);
   letter-spacing: 0.02em;
   color: var(--color-text);
   white-space: nowrap;
@@ -153,7 +156,7 @@
   width: 82%;
   font-family: var(--font-body);
   font-weight: 500;
-  font-size: 27px;
+  font-size: clamp(19px, 2vw, 27px);
   line-height: 1.3;
   color: var(--color-text);
 }
@@ -244,7 +247,7 @@
 }
 .accordionRow.open .expandBtn { opacity: 1; }
 
-.workPanel { display: flex; flex-direction: column; margin: -16px; }
+.panel.workPanel { display: flex; flex-direction: column; margin: -16px; padding: 0; width: calc(100% + 32px); height: calc(100% + 32px); }
 .workPanelHero { position: relative; height: 42%; flex-shrink: 0; }
 .workPanelTitle { position: absolute; left: 28px; bottom: 20px; margin: 0; font-family: var(--font-display); font-size: 38px; color: #f2e6cc; }
 .workPanelBody { padding: 26px 32px; overflow-y: auto; color: var(--color-text); }
@@ -280,7 +283,7 @@
   position: relative;
   display: inline-block;
   font-family: var(--font-display);
-  font-size: 52px;
+  font-size: clamp(26px, 3.3vw, 52px);
   color: var(--color-text);
   line-height: 1.3;
 }
@@ -319,25 +322,6 @@
 
 /* --- Animations --- */
 @keyframes spin { to { transform: rotate(360deg); } }
-
-/* --- Small-screen fallback: stack everything, drop expand-to-fullscreen math --- */
-@media (max-width: 900px) {
-  .parent {
-    height: auto;
-    min-height: 100vh;
-    grid-template-columns: 1fr;
-    grid-template-rows: none;
-    gap: 16px;
-  }
-  .headerOscar, .phraseContainer, .imageContainer, .myWork, .aboutMe, .contactMe, .socialMedia {
-    grid-column: 1 / 2;
-    grid-row: auto;
-    min-height: 220px;
-  }
-  .myWork { min-height: 420px; }
-  .card.isFullscreen { inset: 12px; }
-  .aboutPanel { padding: 56px 20px 40px; }
-}
 
 .aboutPanel:has(.contactWrap) .closeBtn { position: absolute; top: 32px; right: 32px; float: none; margin: 0; }
 
@@ -405,3 +389,49 @@
   overflow-wrap: anywhere;
 }
 .photoInfo strong { font: 400 28px/1.15 var(--font-display); margin-bottom: 6px; }
+
+/* --- Mid-width laptops/tablets landscape: same grid, tighter spacing --- */
+@media (max-width: 1200px) {
+  .parent { padding: 16px; gap: 14px; }
+  .circularBadge { width: 84px; height: 84px; top: 14px; right: 14px; }
+  .phraseContainer .cardInner, .contactInner, .aboutInner { padding: 20px; }
+  .aboutText { font-size: 14px; }
+}
+
+/* --- Small-screen fallback: stack everything, drop expand-to-fullscreen math --- */
+@media (max-width: 900px) {
+  .parent {
+    height: auto;
+    min-height: 100dvh;
+    padding: 12px;
+    grid-template-columns: 1fr;
+    grid-template-rows: none;
+    gap: 12px;
+  }
+  .headerOscar, .phraseContainer, .imageContainer, .myWork, .aboutMe, .contactMe, .socialMedia {
+    grid-column: 1 / 2;
+    grid-row: auto;
+    min-height: 220px;
+  }
+  .headerOscar, .socialMedia { min-height: 64px; padding: 12px 16px; gap: 12px; }
+  .headerName { font-size: clamp(14px, 4.4vw, 26px); white-space: normal; line-height: 1.3; }
+  .phraseContainer { min-height: 260px; }
+  .tagline { width: 100%; }
+  .circularBadge { width: 76px; height: 76px; }
+  .imageContainer { min-height: 0; height: min(120vw, 75dvh); }
+  .myWork { min-height: 420px; }
+  .panel, .aboutPanel { padding: 56px 20px 40px; }
+  .aboutPanel .closeBtn { margin: -40px -8px 0 0; }
+  .workPanelHero { height: 30%; min-height: 150px; }
+  .workPanelTitle { left: 20px; right: 64px; font-size: clamp(22px, 7vw, 38px); }
+  .workPanelBody { padding: 20px; }
+  .panelBody { font-size: 16px; }
+}
+
+/* Narrow social card (phones, and the 4-column cell on mid widths): icon over label, no arrow */
+@media (max-width: 480px), (min-width: 901px) and (max-width: 1200px) {
+  .socialMedia nav { gap: 8px; }
+  .socialLink { flex-direction: column; justify-content: center; gap: 3px; padding: 7px 6px; font-size: 13px; }
+  .socialLabel { flex: none; }
+  .socialArrow { display: none; }
+}
