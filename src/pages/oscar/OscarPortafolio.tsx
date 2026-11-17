@@ -166,15 +166,15 @@ const dict = {
   es: {
     tagline: "Siempre en busca de nuevos desafíos que me obliguen a mejorar como ingeniero y persona.",
     philosophy: "Creo en construir con cuidado: cada detalle de una interfaz comunica algo, y vale la pena tomarse el tiempo de acertarlo.",
-    bio: "Ingeniero de Sistemas graduado de la Universidad Santo Tomás, apasionado por la infraestructura tecnológica, la gestión de datos y la resolución de problemas complejos. Cuento con base teórica y práctica en desarrollo de software fullstack, optimización de consultas SQL, modelado de datos y uso de herramientas de monitoreo en entornos de desarrollo, además de fundamentos en Cloud Computing (Microsoft Azure). Destaco por mi capacidad de aprendizaje continuo y adaptabilidad a nuevos entornos —demostrada durante mi intercambio académico en Corea del Sur—, el trabajo en equipo y la comunicación asertiva. Ganador de múltiples hackathons y ponente en congresos de investigación, lo que respalda mi enfoque proactivo y orientado a resultados.",
     contactLine1: "¿Construimos",
     contactLine2: "algo juntos?",
     contactCta: "Contáctame",
     contactExtra: "Respondo mensajes de lunes a viernes. Cuéntame en qué estás trabajando.",
     closeLabel: "Cerrar",
-    moreHint: "Conoce más",
-    aboutHeading: "Sobre mí",
-    bioShort: "Ingeniero de Sistemas (USTA) enfocado en desarrollo fullstack, datos y cloud.",
+    aboutHeading: "Perfil profesional",
+    aboutHint: "Ver trayectoria",
+    personalHeading: "Más allá del código",
+    personalHint: "Conoce mi lado personal",
     creds: ["Ganador de hackathons", "Ponente en congresos", "Intercambio en Corea del Sur"],
     liveLink: "Ver proyecto en vivo",
     langBtn: "EN",
@@ -193,15 +193,15 @@ const dict = {
   en: {
     tagline: "Always chasing new challenges that push me to grow as an engineer and as a person.",
     philosophy: "I believe in building with care: every detail in an interface says something, and it is worth the time to get it right.",
-    bio: "Systems Engineer graduated from Universidad Santo Tomás, passionate about technology infrastructure, data management and solving complex problems. I have theoretical and practical grounding in fullstack software development, SQL query optimization, data modeling and monitoring tools in development environments, plus cloud computing fundamentals (Microsoft Azure). I stand out for continuous learning and adaptability to new environments — proven during my academic exchange in South Korea — teamwork and assertive communication. Multiple-time hackathon winner and research congress speaker, which backs my proactive, results-driven approach.",
     contactLine1: "Let's build",
     contactLine2: "something together",
     contactCta: "Contact me",
     contactExtra: "I reply to messages Monday through Friday. Tell me what you are working on.",
     closeLabel: "Close",
-    moreHint: "Learn more",
-    aboutHeading: "About me",
-    bioShort: "Systems Engineer (USTA) focused on fullstack development, data and cloud.",
+    aboutHeading: "Professional profile",
+    aboutHint: "See my background",
+    personalHeading: "Beyond the code",
+    personalHint: "Meet the person",
     creds: ["Hackathon winner", "Congress speaker", "Exchange in South Korea"],
     liveLink: "View live project",
     langBtn: "ES",
@@ -575,16 +575,17 @@ export default function OscarPortafolio(): React.ReactElement {
             className={`card phraseContainer bg-surface text-text magicCard ${s.wantFull ? "isFullscreen" : ""}`}
             style={{ zIndex: s.isExpanding ? 41 : 5 }}
             onClick={() => !expandedId && openCard("phrase")}
-            {...cardA11y("phrase", t.headerPitch)}
+            {...cardA11y("phrase", t.personalHeading)}
           >
             <AnimatePresence mode="wait">
               {!s.wantFull ? (
                 <motion.div key="collapsed" className="cardInner" exit={{ opacity: 0 }} ref={phraseGlow}>
                   <span className="magicGlow" />
                   <CircularBadge text={t.available} />
-                  <p className="tagline">{t.headerPitch}</p>
+                  <h2 className="aboutHeading">{t.personalHeading}</h2>
+                  <p className="tagline">{t.tagline}</p>
                   <span className="moreHint" aria-hidden="true">
-                    {t.moreHint}
+                    {t.personalHint}
                     <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M7 17 17 7M17 7H8M17 7v9" /></svg>
                   </span>
                 </motion.div>
@@ -705,14 +706,14 @@ export default function OscarPortafolio(): React.ReactElement {
                 <motion.div key="collapsed" className="cardInner aboutInner" exit={{ opacity: 0 }} ref={aboutGlow}>
                   <span className="magicGlow" />
                   <h2 className="aboutHeading">{t.aboutHeading}</h2>
-                  <p className="aboutText">{t.bioShort}</p>
+                  <p className="aboutText">{t.headerPitch}</p>
                   <div className="aboutChips">
                     {t.creds.map((c) => (
                       <span className="tag" key={c}>{c}</span>
                     ))}
                   </div>
                   <span className="moreHint" aria-hidden="true">
-                    {t.moreHint}
+                    {t.aboutHint}
                     <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M7 17 17 7M17 7H8M17 7v9" /></svg>
                   </span>
                 </motion.div>
