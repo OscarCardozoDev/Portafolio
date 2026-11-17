@@ -103,7 +103,7 @@ const myWork: WorkItem[] = [
     },
     stack: "React · TypeScript · NestJS · Prisma · PostgreSQL · Redis · Docker · Azure · GitHub Actions",
     color: "var(--color-rust)",
-    image: "/Proyectos/Quyca/1.png",
+    image: "/Proyectos/Quyca/bg.png",
     summary: {
       es: "SaaS multi-tenant para instituciones educativas colombianas, nacido como galería de arte para el grupo de arte de la Universidad Santo Tomás. Gestión de grupos, calendario de eventos, editor de lecciones con capítulos y portafolios públicos de artistas.",
       en: "Multi-tenant SaaS for Colombian educational institutions, born as an art gallery for the Universidad Santo Tomás art group. Group management, event calendar, lesson editor with chapters and public artist portfolios.",
