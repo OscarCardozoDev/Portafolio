@@ -57,6 +57,7 @@
 }
 
 /* --- Magic Bento hover glow --- */
+.magicCard:focus-visible { outline: 3px solid var(--color-accent); outline-offset: 2px; }
 .magicCard:hover:not(.isFullscreen) {
   box-shadow: 0 0 0 1.5px var(--color-accent), 0 4px 12px rgba(0, 0, 0, 0.15);
 }
@@ -104,6 +105,8 @@
 }
 
 /* --- Header --- */
+.headerTitle { display: flex; flex-direction: column; min-width: 0; }
+.headerRole { font-family: var(--font-body); font-size: 13px; line-height: 1.3; color: var(--color-text-muted); }
 .headerName {
   margin: 0;
   font-family: var(--font-display);
@@ -229,7 +232,10 @@
   font-size: 15px;
   color: #f2e6cc;
   background: linear-gradient(to top, var(--color-shadows), transparent);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
 }
+.accordionStack { display: none; margin-top: 2px; font-size: 12px; line-height: 1.35; opacity: 0.85; }
+.accordionRow.open .accordionStack { display: block; }
 .expandBtn {
   position: absolute;
   top: 8px;
@@ -272,8 +278,32 @@
 }
 
 /* --- About --- */
-.aboutInner { padding: 24px; display: flex; align-items: flex-end; }
+.aboutInner { padding: 24px; display: flex; flex-direction: column; justify-content: flex-end; }
+.aboutHeading { margin: 0 0 10px; font-family: var(--font-display); font-weight: 400; font-size: 26px; line-height: 1.2; color: var(--color-text); }
+.aboutChips { margin-top: 12px; }
+.aboutChips .tag { margin: 0 6px 6px 0; padding: 5px 10px; font-size: 12px; }
 .aboutText { margin: 0; width: 92%; font-family: var(--font-body); font-size: 15px; line-height: 1.5; color: var(--color-text); display: -webkit-box; -webkit-line-clamp: 9; -webkit-box-orient: vertical; overflow: hidden; }
+
+/* "Learn more" pill on clickable cards */
+.moreHint {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  width: fit-content;
+  margin-top: 14px;
+  padding: 5px 12px;
+  border-radius: 999px;
+  border: 1px solid var(--color-accent);
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--color-accent);
+  transition: background 0.2s, color 0.2s;
+}
+.moreHint svg { transition: transform 0.2s; }
+.magicCard:hover .moreHint { background: var(--color-accent); color: var(--color-accent-ink); }
+.magicCard:hover .moreHint svg { transform: translate(2px, -2px); }
+@media (prefers-reduced-motion: reduce) { .moreHint, .moreHint svg { transition: none; } }
 
 /* --- Contact --- */
 .contactInner { padding: 25px; display: flex; flex-direction: column; justify-content: space-between; }

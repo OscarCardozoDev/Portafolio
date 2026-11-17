@@ -21,6 +21,7 @@ type WorkItem = {
   clients?: ClientProject[];
   highlights?: T[];
   links?: ProjectLink[];
+  image?: string;
 };
 
 const same = (s: string): T => ({ es: s, en: s });
@@ -102,6 +103,7 @@ const myWork: WorkItem[] = [
     },
     stack: "React · TypeScript · NestJS · Prisma · PostgreSQL · Redis · Docker · Azure · GitHub Actions",
     color: "var(--color-rust)",
+    image: "/Proyectos/Quyca/1.png",
     summary: {
       es: "SaaS multi-tenant para instituciones educativas colombianas, nacido como galería de arte para el grupo de arte de la Universidad Santo Tomás. Gestión de grupos, calendario de eventos, editor de lecciones con capítulos y portafolios públicos de artistas.",
       en: "Multi-tenant SaaS for Colombian educational institutions, born as an art gallery for the Universidad Santo Tomás art group. Group management, event calendar, lesson editor with chapters and public artist portfolios.",
@@ -165,11 +167,15 @@ const dict = {
     tagline: "Siempre en busca de nuevos desafíos que me obliguen a mejorar como ingeniero y persona.",
     philosophy: "Creo en construir con cuidado: cada detalle de una interfaz comunica algo, y vale la pena tomarse el tiempo de acertarlo.",
     bio: "Ingeniero de Sistemas graduado de la Universidad Santo Tomás, apasionado por la infraestructura tecnológica, la gestión de datos y la resolución de problemas complejos. Cuento con base teórica y práctica en desarrollo de software fullstack, optimización de consultas SQL, modelado de datos y uso de herramientas de monitoreo en entornos de desarrollo, además de fundamentos en Cloud Computing (Microsoft Azure). Destaco por mi capacidad de aprendizaje continuo y adaptabilidad a nuevos entornos —demostrada durante mi intercambio académico en Corea del Sur—, el trabajo en equipo y la comunicación asertiva. Ganador de múltiples hackathons y ponente en congresos de investigación, lo que respalda mi enfoque proactivo y orientado a resultados.",
-    contactLine1: "¿Tienes alguna",
-    contactLine2: "duda?",
+    contactLine1: "¿Construimos",
+    contactLine2: "algo juntos?",
     contactCta: "Contáctame",
     contactExtra: "Respondo mensajes de lunes a viernes. Cuéntame en qué estás trabajando.",
     closeLabel: "Cerrar",
+    moreHint: "Conoce más",
+    aboutHeading: "Sobre mí",
+    bioShort: "Ingeniero de Sistemas (USTA) enfocado en desarrollo fullstack, datos y cloud.",
+    creds: ["Ganador de hackathons", "Ponente en congresos", "Intercambio en Corea del Sur"],
     liveLink: "Ver proyecto en vivo",
     langBtn: "EN",
     roleLabel: "Rol",
@@ -188,11 +194,15 @@ const dict = {
     tagline: "Always chasing new challenges that push me to grow as an engineer and as a person.",
     philosophy: "I believe in building with care: every detail in an interface says something, and it is worth the time to get it right.",
     bio: "Systems Engineer graduated from Universidad Santo Tomás, passionate about technology infrastructure, data management and solving complex problems. I have theoretical and practical grounding in fullstack software development, SQL query optimization, data modeling and monitoring tools in development environments, plus cloud computing fundamentals (Microsoft Azure). I stand out for continuous learning and adaptability to new environments — proven during my academic exchange in South Korea — teamwork and assertive communication. Multiple-time hackathon winner and research congress speaker, which backs my proactive, results-driven approach.",
-    contactLine1: "Got a",
-    contactLine2: "question?",
+    contactLine1: "Let's build",
+    contactLine2: "something together",
     contactCta: "Contact me",
     contactExtra: "I reply to messages Monday through Friday. Tell me what you are working on.",
     closeLabel: "Close",
+    moreHint: "Learn more",
+    aboutHeading: "About me",
+    bioShort: "Systems Engineer (USTA) focused on fullstack development, data and cloud.",
+    creds: ["Hackathon winner", "Congress speaker", "Exchange in South Korea"],
     liveLink: "View live project",
     langBtn: "ES",
     roleLabel: "Role",
@@ -290,7 +300,7 @@ function CircularBadge({ text }: { text: string }) {
 
 export default function OscarPortafolio(): React.ReactElement {
   const [dark, setDark] = useState(false);
-  const [lang, setLang] = useState<"es" | "en">("es");
+  const [lang, setLang] = useState<"es" | "en">(() => (navigator.language.toLowerCase().startsWith("es") ? "es" : "en"));
   const [expandedId, setExpandedId] = useState<ExpandableId | null>(null);
   const [activeProjectId, setActiveProjectId] = useState<number | null>(null);
   const [hoverProjectId, setHoverProjectId] = useState(1);
@@ -339,6 +349,8 @@ export default function OscarPortafolio(): React.ReactElement {
       window.clearTimeout(b);
     };
   }, [reduced, offset, introStacked]);
+
+  useEffect(() => { document.documentElement.lang = lang; }, [lang]);
 
   const t = dict[lang];
   const tr = (x: T) => x[lang];
@@ -394,6 +406,22 @@ export default function OscarPortafolio(): React.ReactElement {
       }, T_CONTENT + T_GROW)
     );
   }
+
+  // Keyboard access for the clickable cards (Enter/Space), only while nothing is expanded.
+  const cardA11y = (id: "phrase" | "about" | "contact", label: string) =>
+    expandedId
+      ? {}
+      : {
+          role: "button" as const,
+          tabIndex: 0,
+          "aria-label": label,
+          onKeyDown: (e: React.KeyboardEvent) => {
+            if (e.target === e.currentTarget && (e.key === "Enter" || e.key === " ")) {
+              e.preventDefault();
+              openCard(id);
+            }
+          },
+        };
 
   function openProject(id: number) {
     setActiveProjectId(id);
@@ -513,7 +541,10 @@ export default function OscarPortafolio(): React.ReactElement {
         style={{ pointerEvents: hideSiblings ? "none" : "auto" }}
       >
         <span className="magicGlow" />
-        <h1 className="headerName">Oscar Javier Cardozo Diaz</h1>
+        <div className="headerTitle">
+          <h1 className="headerName">Oscar Javier Cardozo Diaz</h1>
+          <span className="headerRole">{t.headerRole}</span>
+        </div>
         <div className="headerControls">
           <button type="button" className="pillBtn" onClick={() => setLang(lang === "es" ? "en" : "es")}>
             {t.langBtn}
@@ -544,13 +575,18 @@ export default function OscarPortafolio(): React.ReactElement {
             className={`card phraseContainer bg-surface text-text magicCard ${s.wantFull ? "isFullscreen" : ""}`}
             style={{ zIndex: s.isExpanding ? 41 : 5 }}
             onClick={() => !expandedId && openCard("phrase")}
+            {...cardA11y("phrase", t.headerPitch)}
           >
             <AnimatePresence mode="wait">
               {!s.wantFull ? (
                 <motion.div key="collapsed" className="cardInner" exit={{ opacity: 0 }} ref={phraseGlow}>
                   <span className="magicGlow" />
                   <CircularBadge text={t.available} />
-                  <p className="tagline">{t.tagline}</p>
+                  <p className="tagline">{t.headerPitch}</p>
+                  <span className="moreHint" aria-hidden="true">
+                    {t.moreHint}
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M7 17 17 7M17 7H8M17 7v9" /></svg>
+                  </span>
                 </motion.div>
               ) : (
                 renderPanel("phrase", s.showContent)
@@ -629,7 +665,7 @@ export default function OscarPortafolio(): React.ReactElement {
                       key={p.id}
                       type="button"
                       className={`accordionRow ${p.id === hoverProjectId ? "open" : ""}`}
-                      style={{ background: p.color }}
+                      style={{ background: p.image ? `${p.color} url(${p.image}) center / cover` : p.color }}
                       onMouseEnter={() => setHoverProjectId(p.id)}
                       onFocus={() => setHoverProjectId(p.id)}
                       // Touch has no hover: first tap unfolds the row, second opens it.
@@ -639,7 +675,7 @@ export default function OscarPortafolio(): React.ReactElement {
                       <span className="expandBtn" aria-hidden="true">
                         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#f2e6cc" strokeWidth="2.5"><path d="M8 3H3v5M16 3h5v5M8 21H3v-5M16 21h5v-5" /></svg>
                       </span>
-                      <span className="accordionLabel">{p.title}</span>
+                      <span className="accordionLabel">{p.title}<span className="accordionStack">{p.stack}</span></span>
                     </button>
                   ))}
                 </motion.div>
@@ -662,14 +698,23 @@ export default function OscarPortafolio(): React.ReactElement {
             className={`card aboutMe bg-surface text-text magicCard ${s.wantFull ? "isFullscreen" : ""}`}
             style={{ zIndex: s.isExpanding ? 41 : 5 }}
             onClick={() => !expandedId && openCard("about")}
+            {...cardA11y("about", t.aboutHeading)}
           >
             <AnimatePresence mode="wait">
               {!s.wantFull ? (
                 <motion.div key="collapsed" className="cardInner aboutInner" exit={{ opacity: 0 }} ref={aboutGlow}>
                   <span className="magicGlow" />
-                  <p className="aboutText">
-                    {t.bio}
-                  </p>
+                  <h2 className="aboutHeading">{t.aboutHeading}</h2>
+                  <p className="aboutText">{t.bioShort}</p>
+                  <div className="aboutChips">
+                    {t.creds.map((c) => (
+                      <span className="tag" key={c}>{c}</span>
+                    ))}
+                  </div>
+                  <span className="moreHint" aria-hidden="true">
+                    {t.moreHint}
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M7 17 17 7M17 7H8M17 7v9" /></svg>
+                  </span>
                 </motion.div>
               ) : (
                 renderPanel("about", s.showContent)
@@ -690,6 +735,7 @@ export default function OscarPortafolio(): React.ReactElement {
             className={`card contactMe bg-surface text-text magicCard ${s.wantFull ? "isFullscreen" : ""}`}
             style={{ zIndex: s.isExpanding ? 41 : 5 }}
             onClick={() => !expandedId && openCard("contact")}
+            {...cardA11y("contact", t.contactCta)}
           >
             <AnimatePresence mode="wait">
               {!s.wantFull ? (
@@ -699,7 +745,7 @@ export default function OscarPortafolio(): React.ReactElement {
                     <h3>{t.contactLine1}<br />{t.contactLine2}</h3>
                     <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--color-text)" strokeWidth="2" style={{ transform: "rotate(45deg)" }}><path d="M5 19 19 5M19 5H9M19 5v10" /></svg>
                   </div>
-                  <a className="cta" href="#" onClick={(e) => e.stopPropagation()}>{t.contactCta}</a>
+                  <span className="cta">{t.contactCta}</span>
                 </motion.div>
               ) : (
                 renderPanel("contact", s.showContent)

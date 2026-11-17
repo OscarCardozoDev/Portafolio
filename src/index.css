@@ -22,6 +22,11 @@
   --font-body: "Outfit", sans-serif;
 }
 
+/* Monoton's hairlines vanish at phone sizes; swap to a heavy retro slab */
+@media (max-width: 900px) {
+  :root { --font-display: "Ultra", serif; }
+}
+
 /* Dark-mode toggle overrides (applied via [data-theme="dark"] on the page root) */
 [data-theme="dark"] {
   --color-bg: #120c07;
